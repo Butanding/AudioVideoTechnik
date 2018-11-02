@@ -1,1 +1,15 @@
-.idea/
+### Basics ###
+
+# OSX files
+.DS_Store
+
+### Node ###
+
+# node files
+node_modules/
+.npm
+
+# Logs
+logs
+*.log
+npm-debug.log*
