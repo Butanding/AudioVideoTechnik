@@ -1,20 +1,18 @@
 <html>
-
 <head>
   <title>AV Midi</title>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css">
 </head>
 
-<main id="home">
+<body id="bg-img">
   <header>
   </header>
+  <main id="home">
 
-  <body id="bg-img">
     <div id="player">
       <audio src="./res/soundfiles/song.mp3" type="audio/mpeg"></audio>
       <div id="progress-bar">
-
       </div>
       <div id="controls">
         <button data-playing="false" role="switch" aria-checked="false">
@@ -24,23 +22,22 @@
       </div>
     </div>
 
+    <canvas class="visual" width="640" height="100"></canvas>
+
     <div id="midi-logger">
-      <h2>MIDI-Events (logged)</h2>
+      <h2>MIDI-Events</h2>
       <textarea id="result" style="overflow-y: scroll; width: 400px; height: 100px; resize: none;">
-        </textarea>
+      </textarea>
     </div>
-</main>
+  </main>
 
+  <footer id="main-footer">
+    Project made by Konsta, Martin, Oliver<br>
+    Copyright &copy; 2018
+  </footer>
 
-
-
-<footer id="main-footer">
-  Project made by Konsta, Martin, Oliver<br>
-  Copyright &copy; 2018
-</footer>
-
-<script src="./js/midi.js"></script>
-<script src="./js/audio.js"></script>
+  <script src="./js/midi.js"></script>
+  <script src="./js/audio.js"></script>
 </body>
 
 </html>
