@@ -7,7 +7,7 @@
 <body>
     <figure id="videoContainer">
         <video id="video" controls preload="metadata" poster="" width="320" height="176"></video>
-        <figcaption>Rick and Morty - Sample Video</figcaption>
+        <figcaption></figcaption>
     </figure>
 
     <ul id="video-playback-controls" class="controls">
@@ -37,6 +37,18 @@
 
         <!-- Video-Chanels -->
         <li><button id="changevideo" type="button">Change Video</button> </li>
+
+        <!-- Video-Looping -->
+        <li>
+            <label for="startsec">Starting Second:</label>
+            <input id="startsec" type="number" value="0"/>
+        </li>
+        <li>
+            <label for="stopsec">Stoping Second:</label>
+            <input id="stopsec" type="number" value="0"/>
+        </li>
+        <li><button id="loop" type="button">Loop!</button> </li>
+        <li><button id="deloop" type="button">Remove Loop</button> </li>
     </ul>
 
     <script src="./js/video.js"></script>

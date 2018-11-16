@@ -55,8 +55,13 @@ if (supportsVideo) {
     var currentchannel = 0;
     nextVideo();
 
-    addEventListeners();
+    //Looping Videos
+    var startloop = document.getElementById('startsec');
+    var stoploop = document.getElementById('stopsec');
+    var loop = document.getElementById('loop');
+    var loopremove = document.getElementById('deloop');
 
+    addEventListeners();
 
     function addEventListeners(){
 
@@ -131,6 +136,20 @@ if (supportsVideo) {
             nextVideo();
         });
 
+        loop.addEventListener('click', function (e) {
+
+            video.addEventListener('timeupdate', looping = function () {
+                if(video.currentTime >= stoploop.value) {
+                    video.currentTime = startloop.value;
+                }
+            });
+        });
+
+        loopremove.addEventListener('click', function(e){
+            video.removeEventListener('timeupdate', looping);
+        });
+
+
     }
 
     function alterVolume(dir) {
@@ -146,16 +165,15 @@ if (supportsVideo) {
     }
 
     function nextVideo() {
-        console.log("current chan: " + currentchannel);
+        var figcaption = videoContainer.getElementsByTagName('figcaption')[0];
         currentchannel++;
         if (currentchannel >= videochannels.length) currentchannel = 0;
-
         video.setAttribute("poster", videochannels[currentchannel][0]);
-        console.log(videochannels[currentchannel][0]);
         source.setAttribute("src", videochannels[currentchannel][1]);
-        console.log(videochannels[currentchannel][1]);
-
+        figcaption.textContent = videochannels[currentchannel][1];
         video.load();
     }
+
+
 }
 
