@@ -6,12 +6,8 @@
 </head>
 <body>
     <figure id="videoContainer">
-        <video id="video" controls preload="metadata" poster="img/rick-and-morty.jpg" width="320" height="176">
-            <source src="video/rick-and-morty.mp4" type="video/mp4">
-            <!-- Offer download -->
-            <a href="video/rick-and-morty.mp4">Download MP4</a>
-        </video>
-        <figcaption>&copy; Rick and Morty - Sample Video</figcaption>
+        <video id="video" controls preload="metadata" poster="" width="320" height="176"></video>
+        <figcaption>Rick and Morty - Sample Video</figcaption>
     </figure>
 
     <ul id="video-playback-controls" class="controls">
@@ -22,7 +18,7 @@
         <!-- Speed -->
         <li><button id="faster" type="button">Speed ++</button> </li>
         <li><button id="slower" type="button">Speed --</button> </li>
-        <li><button id="currentspeed" type="button">Current Speed is: </button> </li>
+        <li><label id="currentspeed">Current Playback Speed is: </label> </li>
         <li class="progress">
             <progress id="progress" value="0" min="0">
                 <span id="progress-bar"></span>
@@ -34,13 +30,13 @@
         <li><button id="jumpbehind" type="button">current Time -=10</button></li>
         <li><button id="jumptopos" type="button">current Time = 50</button></li>
 
-
-    </ul>
-
-    <ul id="audio-playback-controls" class="controls">
+        <!-- Audio -->
         <li><button id="mute" type="button">Mute/Unmute</button></li>
         <li><button id="volinc" type="button">Vol+</button></li>
         <li><button id="voldec" type="button">Vol-</button></li>
+
+        <!-- Video-Chanels -->
+        <li><button id="changevideo" type="button">Change Video</button> </li>
     </ul>
 
     <script src="./js/video.js"></script>

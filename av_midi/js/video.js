@@ -5,10 +5,12 @@ if (supportsVideo) {
     // after browser/video validation, set up custom controls
     var videoContainer = document.getElementById('videoContainer');
     var video = document.getElementById('video');
+    // Source custom Video Controls and hide the system ones
     var videoControls = document.getElementById('video-playback-controls');
-
-    // Hide the default controls
     video.controls = false;
+
+    var source = document.createElement('source');
+    video.appendChild(source);
 
     // Display the user defined video controls
     videoControls.style.display = 'block';
@@ -16,9 +18,6 @@ if (supportsVideo) {
     // Video Controls
     var playpause = document.getElementById('playpause');
     var stop = document.getElementById('stop');
-    //Progress Properties
-    var progress = document.getElementById('progress');
-    var progressBar = document.getElementById('progress-bar');
 
     var playbackfaster = document.getElementById('faster');
     var playbackslower = document.getElementById('slower');
@@ -28,55 +27,111 @@ if (supportsVideo) {
     var jumpbehind = document.getElementById('jumpbehind');
     var jumptopos = document.getElementById('jumptopos');
 
+    var progress = document.getElementById('progress');
+    var progressBar = document.getElementById('progress-bar');
+
     //Audio controls
     var mute = document.getElementById('mute');
     var volinc = document.getElementById('volinc');
     var voldec = document.getElementById('voldec');
 
-    playpause.addEventListener('click', function(e) {
-        if (video.paused || video.ended) video.play();
-        else video.pause();
-    });
+    //Video Channels
+    var videochannels =
+        [
+            [
+                "http://media.w3.org/2010/05/sintel/poster.png",
+                "http://media.w3.org/2010/05/sintel/trailer.mp4"
+            ],
+            [
+                "http://media.w3.org/2010/05/bunny/poster.png",
+                "http://media.w3.org/2010/05/bunny/trailer.mp4"
+            ],
+            [
+                "http://media.w3.org/2010/05/bunny/poster.png",
+                "http://media.w3.org/2010/05/bunny/movie.mp4"
+            ]
+        ];
+    var changevideo = document.getElementById('changevideo');
+    var currentchannel = 0;
+    nextVideo();
 
-    stop.addEventListener('click', function(e) {
-        video.pause();
-        video.currentTime = 0;
-        progress.value = 0;
-    });
+    addEventListeners();
 
-    mute.addEventListener('click', function(e) {
-        video.muted = !video.muted;
-    });
 
-    volinc.addEventListener('click', function(e) {
-        alterVolume('+')
-    });
-    voldec.addEventListener('click', function(e) {
-        alterVolume('-')
-    });
+    function addEventListeners(){
 
-    playbackslower.addEventListener('click', function(e) {
-        video.playbackRate -= 0.1;
-        currentspeed.textContent = 'Current Playback Speed: ' + video.playbackRate;
-    });
+        playpause.addEventListener('click', function(e) {
+            if (video.paused || video.ended) video.play();
+            else video.pause();
+        });
 
-    playbackfaster.addEventListener('click', function(e) {
-        video.playbackRate +=0.1;
-        currentspeed.textContent = 'Current Playback Speed: ' + video.playbackRate;
+        stop.addEventListener('click', function(e) {
+            video.pause();
+            video.currentTime = 0;
+            progress.value = 0;
+        });
 
-    });
+        mute.addEventListener('click', function(e) {
+            video.muted = !video.muted;
+        });
 
-    jumpahead.addEventListener('click', function(e) {
-        video.currentTime += 10;
-    });
+        volinc.addEventListener('click', function(e) {
+            alterVolume('+')
+        });
+        voldec.addEventListener('click', function(e) {
+            alterVolume('-')
+        });
 
-    jumpbehind.addEventListener('click', function(e) {
-        video.currentTime -= 10;
-    });
+        playbackslower.addEventListener('click', function(e) {
+            video.playbackRate -= 0.1;
+            currentspeed.textContent = 'Current Playback Speed: ' + video.playbackRate;
+        });
 
-    jumptopos.addEventListener('click', function(e) {
-        video.currentTime = 50;
-    });
+        playbackfaster.addEventListener('click', function(e) {
+            video.playbackRate +=0.1;
+            currentspeed.textContent = 'Current Playback Speed: ' + video.playbackRate;
+
+        });
+
+        jumpahead.addEventListener('click', function(e) {
+            video.currentTime += 10;
+        });
+
+        jumpbehind.addEventListener('click', function(e) {
+            video.currentTime -= 10;
+        });
+
+        jumptopos.addEventListener('click', function(e) {
+            video.currentTime = 50;
+        });
+
+        //Init Progress Bar to work hand in hand with video
+        video.addEventListener('loadedmetadata', function() {
+            progress.setAttribute('max', video.duration);
+        });
+
+        video.addEventListener('timeupdate', function() {
+            progress.value = video.currentTime;
+            progressBar.style.width = Math.floor((video.currentTime / video.duration) * 100) + '%';
+        });
+
+        video.addEventListener('timeupdate', function() {
+            if (!progress.getAttribute('max')) progress.setAttribute('max', video.duration);
+            progress.value = video.currentTime;
+            progressBar.style.width = Math.floor((video.currentTime / video.duration) * 100) + '%';
+        });
+
+        //Skip ahead to video-position
+        progress.addEventListener('click', function(e) {
+            var pos = (e.pageX  - this.offsetLeft) / this.offsetWidth;
+            video.currentTime = pos * video.duration;
+        });
+
+        changevideo.addEventListener('click', function() {
+            nextVideo();
+        });
+
+    }
 
     function alterVolume(dir) {
         var currentVolume = Math.floor(video.volume * 10) / 10;
@@ -88,28 +143,19 @@ if (supportsVideo) {
             console.log('Volume -- ' + currentVolume);
             if (currentVolume > 0) video.volume -= 0.1;
         }
-    };
+    }
 
-    //Init Progress Bar to work hand in hand with video
-    video.addEventListener('loadedmetadata', function() {
-        progress.setAttribute('max', video.duration);
-    });
+    function nextVideo() {
+        console.log("current chan: " + currentchannel);
+        currentchannel++;
+        if (currentchannel >= videochannels.length) currentchannel = 0;
 
-    video.addEventListener('timeupdate', function() {
-        progress.value = video.currentTime;
-        progressBar.style.width = Math.floor((video.currentTime / video.duration) * 100) + '%';
-    });
+        video.setAttribute("poster", videochannels[currentchannel][0]);
+        console.log(videochannels[currentchannel][0]);
+        source.setAttribute("src", videochannels[currentchannel][1]);
+        console.log(videochannels[currentchannel][1]);
 
-    video.addEventListener('timeupdate', function() {
-        if (!progress.getAttribute('max')) progress.setAttribute('max', video.duration);
-        progress.value = video.currentTime;
-        progressBar.style.width = Math.floor((video.currentTime / video.duration) * 100) + '%';
-    });
-
-    //Skip ahead to video-position
-    progress.addEventListener('click', function(e) {
-        var pos = (e.pageX  - this.offsetLeft) / this.offsetWidth;
-        video.currentTime = pos * video.duration;
-    });
+        video.load();
+    }
 }
 
