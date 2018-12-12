@@ -73,3 +73,40 @@ a:hover {
   color: #fff;
   height: 30px;
 }
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 100px 100px 100px 100px 100px 100px 100px;
+  grid-template-areas: "mainPlayback mainPlayback mainPlayback mainPlayback mainEQ" "mainPlayback mainPlayback mainPlayback mainPlayback mainEQ" "firstEQ secondEQ thirdEQ forthEQ mainEQ" "firstEQ secondEQ thirdEQ forthEQ mainEQ" "firstEQ secondEQ thirdEQ forthEQ mainEQ" "videoControl videoControl videoControl videoControl videoControl" "videoControl videoControl videoControl videoControl videoControl";
+}
+
+.mainPlayback {
+  grid-area: mainPlayback;
+  background-color: #bfb1d5;}
+
+.mainEQ {
+  grid-area: mainEQ;
+  background-color: #adddcf;
+}
+
+.firstEQ {
+  grid-area: firstEQ;
+  background-color: #abe1fd; }
+
+.secondEQ {
+  grid-area: secondEQ;
+  background-color: #fed1be; }
+
+.thirdEQ {
+  grid-area: thirdEQ;
+  background-color: #f0e0a2; }
+
+.forthEQ {
+  grid-area: forthEQ;
+  background-color: #e8e7e5; }
+
+.videoControl {
+  grid-area: videoControl;
+  background-color: #777777; }

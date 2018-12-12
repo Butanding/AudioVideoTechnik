@@ -9,32 +9,39 @@
   <header>
   </header>
   <main id="home">
+    <div class="grid-container">
+      <div class="mainPlayback">
+        <canvas class="visual" width="640" height="100"></canvas>
+      </div>
+      <div class="mainEQ">
+      </div>
+      <div class="firstEQ">
+        <div id="record">
+          <button id="useMicButton" type="button" onClick="useMicrophone()">Use Microphone</button>
 
-    <div id="player">
-      <audio src="./res/soundfiles/song.mp3" type="audio/mpeg"></audio>
-      <div id="progress-bar">
-      </div>
-      <div id="controls">
-        <button data-playing="false" role="switch" aria-checked="false">
-          <span>Play/Pause</span>
-        </button>
-        <input type="range" id="volume" min="0" max="2" value="1" step="0.01" />
-      </div>
+      </div></div>
+      <div class="secondEQ">
+
+          <audio src="./res/soundfiles/song.mp3" type="audio/mpeg"></audio>
+          <div id="progress-bar">
+          </div>
+          <div id="controls">
+            <button data-playing="false" role="switch" aria-checked="false">
+              <span>Play/Pause</span>
+            </button>
+            <input type="range" id="volume" min="0" max="2" value="1" step="0.01" />
+          </div>
+        </div>
+      <div class="thirdEQ"></div>
+      <div class="forthEQ"></div>
+      <div class="videoControl">
+        <div id="midi-logger">
+          <h2>MIDI-Events</h2>
+          <textarea id="result" style="overflow-y: scroll; width: 400px; height: 100px; resize: none;">
+          </textarea>
+        </div></div>
     </div>
 
-    <div id="player">
-      <div id="record">
-        <button id="useMicButton" type="button" onClick="useMicrophone()">Use Microphone</button>
-      </div>
-    </div>
-
-    <canvas class="visual" width="640" height="100"></canvas>
-
-    <div id="midi-logger">
-      <h2>MIDI-Events</h2>
-      <textarea id="result" style="overflow-y: scroll; width: 400px; height: 100px; resize: none;">
-      </textarea>
-    </div>
   </main>
 
   <footer id="main-footer">
