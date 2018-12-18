@@ -15,10 +15,9 @@ const track = audioCtx.createMediaElementSource(audioElement);
 track.connect(audioCtx.destination);
 
 // select our play button
-const playButton = document.querySelector('button');
+const playButton = document.getElementById('audioPlayback');
 
 playButton.addEventListener('click', function() {
-
   // check if context is in suspended state (autoplay policy)
   if (audioCtx.state === 'suspended') {
     audioCtx.resume();
@@ -136,7 +135,7 @@ function visualize() {
 
       x += barWidth + 1;
     }
-  };
+  }
 
   draw();
 
