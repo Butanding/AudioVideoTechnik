@@ -1,10 +1,17 @@
 "use strict";
+import Visuaziler from "./videoplayer.js";
 
 // create Context
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioCtx = new AudioContext();
 let source;
 let stream;
+
+//load video content
+document.addEventListener('DOMContentLoaded', () => {
+  let videoplayer = new Visuaziler();
+  document.getElementById("visualizer").appendChild(videoplayer);
+});
 
 // get the audio element
 const audioElement = document.querySelector('audio');
@@ -63,15 +70,13 @@ var distortion = audioCtx.createWaveShaper();
 var biquadFilter = audioCtx.createBiquadFilter();
 var convolver = audioCtx.createConvolver();
 
-var canvas = document.querySelector('.visual');
-var canvasCtx = canvas.getContext("2d");
 
 
 var visualSelect = document.getElementById("visual");
 
 var drawVisual;
 
-visualize();
+
 
 function useMicrophone() {
   if (navigator.getUserMedia) {
@@ -107,36 +112,7 @@ function useMicrophone() {
 }
 
 function visualize() {
+  console.log("starting visualization");
 
-  analyser.fftSize = 256;
-  var bufferLength = analyser.frequencyBinCount;
-  console.log(bufferLength);
-  var dataArray = new Float32Array(bufferLength);
-
-  canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-
-  function draw() {
-    drawVisual = requestAnimationFrame(draw);
-
-    analyser.getFloatFrequencyData(dataArray);
-
-    canvasCtx.fillStyle = 'rgb(0, 0, 0)';
-    canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
-
-    var barWidth = (canvas.width / bufferLength) * 2.5;
-    var barHeight;
-    var x = 0;
-
-    for (var i = 0; i < bufferLength; i++) {
-      barHeight = (dataArray[i] + 140) * 2;
-
-      canvasCtx.fillStyle = 'rgb(' + Math.floor(barHeight + 100) + ',50,50)';
-      canvasCtx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
-
-      x += barWidth + 1;
-    }
-  }
-
-  draw();
 
 }
