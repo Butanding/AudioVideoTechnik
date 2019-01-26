@@ -41,21 +41,35 @@ function addComponentToUI(component) {
     component.style.gridRow = row;
     component.style.gridColumn = column;*/
 
-    document.getElementsByClassName('firstEQ').item(0).appendChild(component)
+    //Why 4? Because the first 3 Slots in Gridcontainer are for Video, MainEQ, etc..
+    //This is actually super-stupid hardcoded and should be dynamic in future
+    var firstSelectableEQSlot = 3;
+    var trackID = parseInt(component.id);
+    //At the moment player supports only 4 EQ's so have to limit
+    if( trackID > 3)
+        trackID = trackID-3;
+    //Multiply beacause of Child-Selection;
+    var currentSlot = trackID*2;
+    var sum = firstSelectableEQSlot+currentSlot;
+
+    let gridContainer = document.getElementsByClassName('grid-container').item(0);
+    console.log('Adding Track to #EQ: ' + sum);
+    let currentEqualizer = gridContainer.childNodes.item(firstSelectableEQSlot+currentSlot).nextSibling.nextSibling;
+    //If there is already track in this EQ, remove the old one first
+    if(currentEqualizer.childNodes.length > 3)
+        currentEqualizer.childNodes.item(4).remove();
+
+    console.log(currentEqualizer);
+
+    currentEqualizer.appendChild(component);
 }
 
 // Hier startet die App
 document.addEventListener('DOMContentLoaded', () => {
 
     //Get all Input-Selectors from index.html
-    let fileLoad1 = document.getElementById('myFile1');
-    let fileLoad2 = document.getElementById('myFile2');
-    let fileLoad3 = document.getElementById('myFile3');
-    let fileLoad4 = document.getElementById('myFile4');
-    fileLoad1.addEventListener('change', handleFileSelect, false);
-    fileLoad2.addEventListener('change', handleFileSelect, false);
-    fileLoad3.addEventListener('change', handleFileSelect, false);
-    fileLoad4.addEventListener('change', handleFileSelect, false);
+    let audioTrackBtn = document.getElementById('newAudioTrack');
+    audioTrackBtn.addEventListener('change', handleFileSelect, false);
 
     }
 )
