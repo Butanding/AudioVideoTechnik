@@ -80,10 +80,19 @@ export default class AudioTrack extends HTMLElement {
             '            <button id="audioPlayback" data-playing="false" role="switch" aria-checked="false">\n' +
             '              <span>Play/Pause</span>\n' +
             '            </button>\n' +
-            '            <input type="range" id="volume" min="0" max="2" value="1" step="0.01" />\n' +
+            '            <input class="slider" id="volume" type="range" min="0" max="127">\n' +
+            '            <div id="progress">\n' +
+            '                <span id="currenttime" class="progressinfo"></span>\n' +
+            '                <input type="range" class="slider" id="progressID" min="0" max="127" step="0.01">\n' +
+            '                <span id="endtime" class="progressinfo"></span>\n' +
+            '             </div>\n' +
             '          </div>\n' +
             '        </div>';
         shadowRoot.innerHTML = html;
+
+
+
+
 
         // set track title
         //shadowRoot.getElementById('title').textContent = name;
@@ -105,7 +114,7 @@ export default class AudioTrack extends HTMLElement {
         // --------------------------------------------------
 
         this.playBtn = this.shadowRoot.getElementById('audioPlayback');
-        this.stopBtn = this.shadowRoot.getElementById('audioPlayback');
+        //this.stopBtn = this.shadowRoot.getElementById('audioPlayback');
 
         this.playBtn.addEventListener('click', function () {
             self.togglePlayback();
@@ -122,8 +131,57 @@ export default class AudioTrack extends HTMLElement {
         this.volumeSlider = this.shadowRoot.getElementById('volume');
         this.volumeSlider.value = this.volumeLevel * 127;
         this.volumeSlider.addEventListener('input', function () {
-            //self.changeVolume(self.volumeSlider.value);
+            self.changeVolume(self.volumeSlider.value);
         });
+
+        // --------------------------------------------------
+        // PROGRESS SLIDER
+        // --------------------------------------------------
+
+        this.progressBar = this.shadowRoot.getElementById('progressID');
+        this.currentTimeLabel = this.shadowRoot.getElementById('currenttime');
+        this.trackDurationLabel = this.shadowRoot.getElementById('endtime');
+        this.currentTimeLabel.textContent = '00:00';
+        this.progressBar.value = 0;
+        this.progressBar.addEventListener('input', function () {
+            self.setCurrentPBTime(self.progressBar.value);
+        });
+
+        let tPFS, tActual, tNext, pStart, tPassed;
+
+        this.startDrawingProgressBar = function (fps) {
+            tPFS = 1 / fps;
+            tNext = self.audioCtx.currentTime;
+            pStart = tNext;
+            this.drawProgressBar();
+        };
+
+        this.drawProgressBar = function () {
+            requestAnimationFrame(self.drawProgressBar);
+            tActual = self.audioCtx.currentTime;
+            tPassed = tActual - tNext;
+            if (tPassed > tPFS && self.isPlaying) {
+                tNext = tActual - (tPassed % tPFS);
+                self.playbackTime += (self.audioCtx.currentTime - self.startTime) * self.playbackRate;
+                self.startTime = self.audioCtx.currentTime;
+                if (self.playbackTime > self.lengthOfTrack)
+                    self.playbackTime -= self.lengthOfTrack;
+
+                self.updateCurrentTimeLabel();
+            }
+        };
+
+        this.updateCurrentTimeLabel = function () {
+            let time = (self.audioCtx.currentTime - self.startTime + self.playbackTime) / self.lengthOfTrack;
+            self.progressBar.value = time * 127;
+            let minute = Math.floor(time / 60 * self.lengthOfTrack);
+            let second = Math.floor(time % 60 * self.lengthOfTrack) - (minute * 60);
+            if (minute < 10)
+                minute = '0' + minute.toString();
+            if (second < 10)
+                second = '0' + second.toString();
+            self.currentTimeLabel.textContent = minute + ':' + second;
+        }
     }
 
     /**
@@ -185,6 +243,7 @@ export default class AudioTrack extends HTMLElement {
         this.source.start(0, this.playbackTime);
         this.isPlaying = true;
         this.source.loop = this.isLooping;
+        this.startDrawingProgressBar(5);
 
 
         let self = this;
@@ -255,6 +314,24 @@ export default class AudioTrack extends HTMLElement {
         if (this.source != null)
             this.gainNode.gain.setValueAtTime(this.volumeLevel, this.audioCtx.currentTime);
         //this.volumeLabel.textContent = Math.floor(this.volumeLevel * 100) + '%';
+    }
+
+    /**
+     * Change current Time of Track to speicific position
+     *
+     * @param controller Input or input from Progress-Bar
+     */
+    setCurrentPBTime(value) {
+        if (this.isPlaying) {
+            this.togglePlayback();
+            this.playbackTime = this.lengthOfTrack * value / 127;
+            this.startTime = this.audioCtx.currentTime;
+            this.togglePlayback();
+        } else {
+            this.playbackTime = this.lengthOfTrack * value / 127;
+            this.startTime = this.audioCtx.currentTime;
+        }
+        this.updateCurrentTimeLabel();
     }
 
     getIdByName(name) {
