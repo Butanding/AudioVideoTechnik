@@ -3,7 +3,10 @@
   <title>AV Midi</title>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="index.js"></script>
 </head>
+
+
 
 <body id="bg-img">
   <header>
@@ -16,35 +19,22 @@
   <main id="home">
     <div class="grid-container">
       <div class="mainPlayback">
-        <div id="visualizer">
-
-        </div>
-
       </div>
       <div class="mainEQ">
       </div>
-      <div class="firstEQ">
-        <div id="record">
-          <button id="useMicButton" type="button" onClick="useMicrophone()">Use Microphone</button>
-        </div>
-      </div>
-      <div class="secondEQ">
-          <div id="progress-bar">
-          </div>
-          <div id="controls">
-            <button id="audioPlayback" data-playing="false" role="switch" aria-checked="false">
-              <span>Play/Pause</span>
-            </button>
-            <input type="range" id="volume" min="0" max="2" value="1" step="0.01" />
-          </div>
-        </div>
+      <div class="firstEQ"></div>
+        <input type="file" id="myFile1">
+      <div class="secondEQ"></div>
+        <input type="file" id="myFile2">
       <div class="thirdEQ"></div>
+        <input type="file" id="myFile3">
       <div class="forthEQ"></div>
+        <input type="file" id="myFile4">
       <div class="videoControl">
+        <input type="file" id="myVideoFile">
         <div id="midi-logger">
           <h2>MIDI-Events</h2>
-          <textarea id="result" style="overflow-y: scroll; width: 400px; height: 100px; resize: none;">
-          </textarea>
+          <textarea id="result" style="overflow-y: scroll; width: 400px; height: 100px; resize: none;"></textarea>
         </div></div>
     </div>
 
@@ -54,12 +44,11 @@
     <p>
       <a href="video.html">Link to Video</a>
     </p>
-    Project made by Konsta, Martin, Oliver<br>
+    Project made by Konstantin & Martin<br>
     Copyright &copy; 2018
   </footer>
 
-  <script src="./js/midi.js"></script>
-  <script type="module" src="./js/audio.js"></script>
+
 </body>
 
 </html>
