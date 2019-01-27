@@ -7,6 +7,15 @@
     color: yellow;
     background-color: #1d1e1f;
 }
+.video-equalizer {
+    margin-top:10px;
+    border: #cdcdcd medium solid;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    color: yellow;
+    background-color: #1d1e1f;
+}
 
 .visualizer {
     margin-top:10px;
