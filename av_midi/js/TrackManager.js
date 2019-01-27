@@ -4,6 +4,8 @@ class TrackManager {
     constructor() {
         this.audioCtx = new AudioContext();
         this.track = new Array();
+        //Currently supporting only 4 Tracks at a time
+        this.track.length = 4;
         this.activeTrack = 0;
     }
 
@@ -13,7 +15,8 @@ class TrackManager {
             if (this.track[i] == null)
                 return i;
         }
-        return this.track.length;
+        //If no Free Slot was found, return -1 to catch error
+        return -1;
     }
 
     // Adds an AudioTrack to the tracklist

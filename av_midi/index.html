@@ -1,52 +1,86 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>AV Midi</title>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-  <link rel="stylesheet" href="css/style.css">
-  <script type="module" src="index.js"></script>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>DV/VJ TOOL BROWSER TITLE</title>
+
+  <meta name="description" content="Source code generated using layoutit.com">
+  <meta name="author" content="LayoutIt!">
+
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+
 </head>
+<body>
 
-
-
-<body id="bg-img">
-  <header>
-  </header>
-
-  <audio src="res/soundfiles/song.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
-
-  <main id="home">
-    <div class="grid-container">
-      <div class="mainPlayback">
-        <input type="file" id="newAudioTrack">
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="heading">
+        <h3>
+          DJ/VJ TOOL
+        </h3>
       </div>
-      <div class="mainEQ">
-      </div>
-      <div class="firstEQ">
-      </div>
-      <div class="secondEQ">
-      </div>
-      <div class="thirdEQ">
-      </div>
-      <div class="forthEQ">
-      </div>
-      <div class="videoControl">
-        <input type="file" id="myVideoFile">
-        <div id="midi-logger">
-          <h2>MIDI-Events</h2>
-          <textarea id="result" style="overflow-y: scroll; width: 400px; height: 100px; resize: none;"></textarea>
-        </div></div>
     </div>
+  </div>
+  <div class="row">
+    <div class="col-md-10">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="visualizer">
+            Visualizer
+          </div>
+        </div>
+      </div>
+      <div class="row border">
+          <div class="col-md-3">
+            <div class="equalizer">
+              EQ 1
+            </div>
+          </div>
+        <div class="col-md-3">
+          <div class="equalizer">
+            EQ 2
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="equalizer">
+            EQ 3
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="equalizer">
+            EQ 4
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="controller">
+        MAIN EQ
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="management">
+        <form>
+          <div class="form-group">
+            <label for="uploadAudioTrack">Upload Audio/Video file</label>
+            <input type="file" class="form-control-file" id="uploadAudioTrack">
+          </div>
+        </form>
+    </div>
+  </div>
+</div>
+</div>
 
-  </main>
-
-  <footer id="main-footer">
-    Project made by Konstantin & Martin<br>
-    Copyright &copy; 2018
-  </footer>
-
-
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="js/scripts.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="module" src="index.js"></script>
 </body>
-
 </html>
