@@ -74,34 +74,35 @@ export default class AudioTrack extends HTMLElement {
         // create shadowDOM and load html into it
         let shadowRoot = this.attachShadow({ mode: 'open' });
         //let html = loadhtml('../../html/audiotrack.html');
-        let html = '<div id="progress-bar">\n' +
-            '          </div>\n' +
-            '          <div id="controls">\n' +
-            '            <button id="audioPlayback" data-playing="false" role="switch" aria-checked="false">\n' +
-            '              <span>Play/Pause</span>\n' +
-            '            </button>\n' +
-            '            <input class="slider" id="volume" type="range" min="0" max="127">\n' +
-            '            <div id="progress">\n' +
-            '                <span id="currenttime" class="progressinfo"></span>\n' +
-            '                <input type="range" class="slider" id="progressID" min="0" max="127" step="0.01">\n' +
-            '                <span id="endtime" class="progressinfo"></span>\n' +
-            '             </div>\n' +
-            '          </div>\n' +
-            '            <button id="removeTrack" aria-checked="false">\n' +
-            '              <span>Remove Track</span>\n' +
-            '            </button>\n' +
-            '        </div>';
-        shadowRoot.innerHTML = html;
-
-
-
-
+        shadowRoot.innerHTML = this.template();
 
         // set track title
         //shadowRoot.getElementById('title').textContent = name;
 
         // initialize all gui elements
         this.initGui();
+    }
+
+    template() {
+        const html = String.raw;
+
+        return html`
+            <div class="audiotrack">
+            <div id="progress-bar">
+            </div>
+            <div id="controls">
+                <button id="audioPlayback" data-playing="false" role="switch" aria-checked="false">
+                    <span>Play/Pause</span>
+                </button>
+                <input class="slider" id="volume" type="range" min="0" max="127">
+                <div id="progress">
+                    <span id="currenttime" class="progressinfo"></span>
+                    <input type="range" class="slider" id="progressID" min="0" max="127" step="0.01">
+                    <span id="endtime" class="progressinfo"></span>
+                </div>
+            </div>
+        </div>
+        `;
     }
 
     /**
