@@ -3,47 +3,50 @@
   <title>AV Midi</title>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="index.js"></script>
 </head>
+
+
 
 <body id="bg-img">
   <header>
   </header>
+
+  <audio src="res/soundfiles/song.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
   <main id="home">
-
-    <div id="player">
-      <audio src="./res/soundfiles/song.mp3" type="audio/mpeg"></audio>
-      <div id="progress-bar">
+    <div class="grid-container">
+      <div class="mainPlayback">
+        <input type="file" id="newAudioTrack">
       </div>
-      <div id="controls">
-        <button data-playing="false" role="switch" aria-checked="false">
-          <span>Play/Pause</span>
-        </button>
-        <input type="range" id="volume" min="0" max="2" value="1" step="0.01" />
+      <div class="mainEQ">
       </div>
+      <div class="firstEQ">
+      </div>
+      <div class="secondEQ">
+      </div>
+      <div class="thirdEQ">
+      </div>
+      <div class="forthEQ">
+      </div>
+      <div class="videoControl">
+        <input type="file" id="myVideoFile">
+        <div id="midi-logger">
+          <h2>MIDI-Events</h2>
+          <textarea id="result" style="overflow-y: scroll; width: 400px; height: 100px; resize: none;"></textarea>
+        </div></div>
     </div>
 
-    <div id="player">
-      <div id="record">
-        <button id="useMicButton" type="button" onClick="useMicrophone()">Use Microphone</button>
-      </div>
-    </div>
-
-    <canvas class="visual" width="640" height="100"></canvas>
-
-    <div id="midi-logger">
-      <h2>MIDI-Events</h2>
-      <textarea id="result" style="overflow-y: scroll; width: 400px; height: 100px; resize: none;">
-      </textarea>
-    </div>
   </main>
 
   <footer id="main-footer">
-    Project made by Konsta, Martin, Oliver<br>
+    Project made by Konstantin & Martin<br>
     Copyright &copy; 2018
   </footer>
 
-  <script src="./js/midi.js"></script>
-  <script src="./js/audio.js"></script>
+
 </body>
 
 </html>
