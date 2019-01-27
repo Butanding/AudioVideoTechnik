@@ -53,7 +53,7 @@ export default class VideoTrack extends HTMLElement {
             this.handleAudioTimeUpdate.bind(this),
         );
 
-        var player = dashjs.MediaPlayer().create();
+        this.player = dashjs.MediaPlayer().create();
         //URL is hardcoded, because javascript cant read URL of Filesystem (Security)
         var url = "../../res/video/" + name;
         console.log("loading video from: " + url);
@@ -61,7 +61,7 @@ export default class VideoTrack extends HTMLElement {
         //player.initialize(this.audio, ("../../res/video/"+name), false);
 
 
-        player.initialize(this.shadowRoot.querySelector("#videoPlayer"), url, true);
+        this.player.initialize(this.shadowRoot.querySelector("#videoPlayer"), url, true);
 
     }
 
@@ -74,20 +74,29 @@ export default class VideoTrack extends HTMLElement {
                     background-color: lightgray;
                 }
                 #videoPlayer {
-                width: 320px;
-                height: 180px;
+                width: 18em;
+                height: 12em;
             }
             </style>
                 <video id="videoPlayer" class="embed-responsive-item" controls></video>
-            <div>
-                <button type="button">Remove Video</button>
+            <div>                
+                <button id="removeTrack" aria-checked="false">
+                  <span>Remove Video</span>
+                </button>
             </div>
         `;
     }
 
     connectedCallback() {
-        const button = this.shadowRoot.querySelector('button');
-        button.addEventListener('click', this.handleButtonClick.bind(this));
+
+        let self = this;
+
+        this.removeButton = this.shadowRoot.getElementById("removeTrack");
+        this.removeButton.addEventListener('click', function () {
+            self.player.reset();
+            self.shadowRoot.innerHTML = null;
+            TrackManager.deleteVideoTrack(self.id);
+        });
     }
 
     handleButtonClick() {
