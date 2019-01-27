@@ -7,18 +7,33 @@ function handleFileSelect(evt){
     evt.stopPropagation();
     evt.preventDefault();
 
-    console.log('file ' + file.name + ' vom typ ' + file.type + ' wurde geladen');
     if (file.type.substring(0, 5) == 'audio') {
-        loadAudioFile(file);
+        if(emptyAudioSlotCheck()){
+            console.log('file ' + file.name + ' vom typ ' + file.type + ' wird geladen');
+            loadAudioFile(file);
+        }
     } else if (file.type.substring(0, 5) == 'video') {
         loadVideoFile(file);
     }
 }
+
+function emptyAudioSlotCheck(){
+    if(TrackManager.findFirstEmptyTrack()<0){
+        console.info("No free Slot available");
+        return false;
+    }else{
+        console.info("Found free Slot available");
+        return true;
+    }
+}
+
+
 function loadAudioFile(file) {
     let trackNumber = TrackManager.findFirstEmptyTrack();
     TrackManager.addAudioTrack(trackNumber, file.name);
     TrackManager.getTrack(trackNumber).loadFileIntoBuffer(file);
     addComponentToUI(TrackManager.getTrack(trackNumber));
+    emptyAudioSlotCheck();
 }
 
 function loadAudioStream(streamNode) {
@@ -36,31 +51,11 @@ function loadAudioStream(streamNode) {
 }
 
 function addComponentToUI(component) {
-    /*let row = Math.floor(component.id / 2) + 1;
-    let column = (component.id % 2) + 1;
-    component.style.gridRow = row;
-    component.style.gridColumn = column;*/
 
-    //Why 4? Because the first 3 Slots in Gridcontainer are for Video, MainEQ, etc..
-    //This is actually super-stupid hardcoded and should be dynamic in future
-    var firstSelectableEQSlot = 3;
+    var equalizers = document.getElementsByClassName("equalizer");
     var trackID = parseInt(component.id);
-    //At the moment player supports only 4 EQ's so have to limit
-    if( trackID > 3)
-        trackID = trackID-3;
-    //Multiply beacause of Child-Selection;
-    var currentSlot = trackID*2;
-    var sum = firstSelectableEQSlot+currentSlot;
-
-    let gridContainer = document.getElementsByClassName('grid-container').item(0);
-    console.log('Adding Track to #EQ: ' + sum);
-    let currentEqualizer = gridContainer.childNodes.item(firstSelectableEQSlot+currentSlot).nextSibling.nextSibling;
-    //If there is already track in this EQ, remove the old one first
-    if(currentEqualizer.childNodes.length > 3)
-        currentEqualizer.childNodes.item(4).remove();
-
-    console.log(currentEqualizer);
-
+    console.log('Adding Track to #EQ: ' + trackID);
+    var currentEqualizer = equalizers.item(trackID);
     currentEqualizer.appendChild(component);
 }
 
@@ -68,7 +63,7 @@ function addComponentToUI(component) {
 document.addEventListener('DOMContentLoaded', () => {
 
     //Get all Input-Selectors from index.html
-    let audioTrackBtn = document.getElementById('newAudioTrack');
+    let audioTrackBtn = document.getElementById('uploadAudioTrack');
     audioTrackBtn.addEventListener('change', handleFileSelect, false);
 
     }
