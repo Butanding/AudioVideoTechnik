@@ -100,6 +100,9 @@ export default class AudioTrack extends HTMLElement {
                     <input type="range" class="slider" id="progressID" min="0" max="127" step="0.01">
                     <span id="endtime" class="progressinfo"></span>
                 </div>
+                <button id="removeTrack" aria-checked="false">
+                  <span>Remove Track</span>
+                </button>
             </div>
         </div>
         `;
@@ -133,7 +136,7 @@ export default class AudioTrack extends HTMLElement {
         this.removeButton.addEventListener('click', function () {
             self.stopPlayback();
             self.shadowRoot.innerHTML = null;
-            TrackManager.deleteTrack(self.id);
+            TrackManager.deleteAudioTrack(self.id);
         });
 
 
