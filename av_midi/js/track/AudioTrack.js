@@ -1,4 +1,4 @@
-
+import TrackManager from '../TrackManager.js';
 
 /**
  * Class to handle logic, behaviour and data of all audio elements as well as gui
@@ -87,6 +87,9 @@ export default class AudioTrack extends HTMLElement {
             '                <span id="endtime" class="progressinfo"></span>\n' +
             '             </div>\n' +
             '          </div>\n' +
+            '            <button id="removeTrack" aria-checked="false">\n' +
+            '              <span>Remove Track</span>\n' +
+            '            </button>\n' +
             '        </div>';
         shadowRoot.innerHTML = html;
 
@@ -122,6 +125,15 @@ export default class AudioTrack extends HTMLElement {
         /*this.stopBtn.addEventListener('click', function () {
             self.stopPlayback();
         });*/
+
+
+        this.removeButton = this.shadowRoot.getElementById('removeTrack');
+
+        this.removeButton.addEventListener('click', function () {
+            self.stopPlayback();
+            self.shadowRoot.innerHTML = null;
+            TrackManager.deleteTrack(self.id);
+        });
 
 
         // --------------------------------------------------
