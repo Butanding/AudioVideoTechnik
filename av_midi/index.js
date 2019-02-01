@@ -7,9 +7,6 @@ function handleFileSelect(evt) {
     evt.stopPropagation();
     evt.preventDefault();
 
-
-
-
     console.log(file.type);
     if (file.type.substring(0, 5) == 'audio') {
         if (emptyAudioSlotCheck()) {
@@ -19,7 +16,7 @@ function handleFileSelect(evt) {
     } else if (file.name.slice(-4) == '.mpd') {
         console.log("VIDEO");
         if (emptyVideoSlotCheck()) {
-            console.log('file ' + file.name + ' vom typ ' + file.type + ' wird geladen');
+            console.log('file ' + file.name + ' vom typ ' + file.name.slice(-4) + ' wird geladen');
             loadVideoFile(file);
         }
     }

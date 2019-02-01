@@ -42,11 +42,14 @@ class TrackManager {
         this.audioTrack[number] = new AudioTrack(this.audioCtx, number, name);
     }
 
-    // Deletes a track
-    //
-    // number: number of the track to delete
+    // Deletes a Audio track
     deleteAudioTrack(number) {
         this.audioTrack[number] = null;
+    }
+
+    // Deletes a Video track
+    deleteVideoTrack(number) {
+        this.videoTrack[number] = null;
     }
 
     // Adds a VideoTrack to the tracklist
