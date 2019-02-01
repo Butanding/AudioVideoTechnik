@@ -17,6 +17,8 @@ export default class VideoTrack extends HTMLElement {
         this.id = id;
         //initialize Video-Filter (Overlaying Canvas)
         this.videoFilter = null;
+        //Animation ID to control frame-update of canvas
+        this.animationID = null;
 
         //Create and fill shadow-root
         const shadowRoot = this.attachShadow({mode: 'open'});
@@ -35,9 +37,6 @@ export default class VideoTrack extends HTMLElement {
         //URL is hardcoded, because javascript cant read URL of Filesystem (Security)
         var url = "../../res/video/" + name;
         this.player.initialize(this.videoPlayer, url, true);
-
-
-
     }
 
     /**
@@ -107,8 +106,15 @@ export default class VideoTrack extends HTMLElement {
 
         let removeButton = self.shadowRoot.getElementById("removeTrack");
         removeButton.addEventListener('click', function () {
+            //Stop possible Animation of Canvas-Filter
+            cancelAnimationFrame(self.animationID);
+            //Remove Canvas
+            self.videoCanvas = null;
+            //Remove Dashjs Player
             self.player.reset();
+            //Empty Shadow-Root
             self.shadowRoot.innerHTML = null;
+            //Delete Video from Global Trackmanager
             TrackManager.deleteVideoTrack(self.id);
         });
     }
@@ -142,7 +148,7 @@ export default class VideoTrack extends HTMLElement {
         //recursive function to repetedly update the filter on the video
         function renderVideoFilter(){
             self.videoFilter.render();
-            requestAnimationFrame(renderVideoFilter);
+            self.animationID = requestAnimationFrame(renderVideoFilter);
         }
     }
 }
