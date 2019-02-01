@@ -174,7 +174,20 @@ export default class AudioTrack extends HTMLElement {
             if (second < 10)
                 second = '0' + second.toString();
             self.currentTimeLabel.textContent = minute + ':' + second;
-        }
+        };
+
+        /**
+         * PLAYBACK SPEED
+         */
+        this.playbackRateSlider = this.shadowRoot.getElementById('playbackspeedslider');
+        this.playbackRateLabel = this.shadowRoot.getElementById('playbackrate');
+
+        this.playbackRateSlider.addEventListener('input', function () {
+            self.changeSpeed(self.playbackRateSlider.value)
+        });
+
+        this.playbackRateSlider.value = 25;
+        this.playbackRateLabel.textContent = this.playbackRate + 'x';
     }
 
     /**
@@ -272,6 +285,25 @@ export default class AudioTrack extends HTMLElement {
     }
 
     /**
+     * Change Playback Speed of Current Audiotrack     *
+     * @param Current Value from midicontroller or slider
+     */
+    changeSpeed(value) {
+        let isPlayingBefore = this.isPlaying;
+        if (isPlayingBefore)
+            this.togglePlayback();
+
+        this.playbackRate = value / 127 * 5;
+        if (this.source != null)
+            this.source.playbackRate.value = this.playbackRate;
+        this.playbackRateSlider.value = value;
+        this.playbackRateLabel.textContent = (this.playbackRate).toFixed(2) + 'x';
+
+        if (isPlayingBefore)
+            this.togglePlayback();
+    }
+
+    /**
      * Initializes and connects all nodes
      */
     initNodes() {
@@ -283,15 +315,19 @@ export default class AudioTrack extends HTMLElement {
         this.gainNode = this.audioCtx.createGain();
         this.gainNode.gain.value = this.volumeLevel;
 
+        //Playbackrate
+        this.source.playbackRate.value = this.playbackRate;
+
         //HIER KOMMEN NOCH ALLE ANDEREN NODES/FILTE DAZU
 
-        // --------------------------------------------------
-        // CONNECT NODES
-        // --------------------------------------------------
-
+        /**
+         * Succeedingly Connect all Nodes together
+         */
         //JEDER NODE MUSS HIER NOCH CONNECTED WERDEN
         this.source.connect(this.gainNode);
         this.gainNode.connect(this.audioCtx.destination);
+
+
 
     }
 
