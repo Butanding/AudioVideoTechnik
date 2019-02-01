@@ -1,4 +1,5 @@
 import TrackManager from '../TrackManager.js';
+import contentLoader from "../utils/contentLoader.js";
 
 /**
  * Class to handle logic, behaviour and data of all audio elements as well as gui
@@ -72,40 +73,16 @@ export default class AudioTrack extends HTMLElement {
         // --------------------------------------------------
 
         // create shadowDOM and load html into it
-        let shadowRoot = this.attachShadow({ mode: 'open' });
-        //let html = loadhtml('../../html/audiotrack.html');
-        shadowRoot.innerHTML = this.template();
+        let htmlTemplate = contentLoader("../../html/AudioTrackTemplate.html");
+        const shadowRoot = this.attachShadow({mode: 'open'});
+        shadowRoot.innerHTML = htmlTemplate;
 
         // set track title
         //shadowRoot.getElementById('title').textContent = name;
 
         // initialize all gui elements
         this.initGui();
-    }
 
-    template() {
-        const html = String.raw;
-
-        return html`
-            <div class="audiotrack">
-            <div id="progress-bar">
-            </div>
-            <div id="controls">
-                <button id="audioPlayback" data-playing="false" role="switch" aria-checked="false">
-                    <span>Play/Pause</span>
-                </button>
-                <input class="slider" id="volume" type="range" min="0" max="127">
-                <div id="progress">
-                    <span id="currenttime" class="progressinfo"></span>
-                    <input type="range" class="slider" id="progressID" min="0" max="127" step="0.01">
-                    <span id="endtime" class="progressinfo"></span>
-                </div>
-                <button id="removeTrack" aria-checked="false">
-                  <span>Remove Track</span>
-                </button>
-            </div>
-        </div>
-        `;
     }
 
     /**
