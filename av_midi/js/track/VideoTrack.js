@@ -1,71 +1,49 @@
 import TrackManager from "../TrackManager.js";
-import chromaKeying from "../manipulators/chromaKeying.js";
+import videoFilter from "../manipulators/VideoFilter.js";
 
 /**
- * Class to handle logic, behaviour and data of all video elements as well as gui
+ * Class to handle VideoTrack Element and all it's Filters
  */
 export default class VideoTrack extends HTMLElement {
 
     /**
-     * Constructor.... this is.
+     * Constructor
      */
     constructor(id, name) {
-        // Calling constructor of HTMLElement (must happen before anything else)
+        // Calling constructor of HTMLElement
         super();
-
-        // --------------------------------------------------
-        // LOGIC + DATA
-        // --------------------------------------------------
-
 
         // set id
         this.id = id;
-
-
-        // source which holds the video data
-        this.source;
-
+        //initialize Video-Filter (Overlaying Canvas)
         this.videoFilter = null;
 
-        // declare initial values regarding playback
-        this.isPlaying = false;
-        this.isPausing = false;
-        this.isLooping = false;
-        this.playbackTime = 0;
-        this.lengthOfTrack;
-
+        //Create and fill shadow-root
         const shadowRoot = this.attachShadow({mode: 'open'});
         shadowRoot.innerHTML = this.template();
 
-        this.audio = new Audio();
-        this.audio.addEventListener(
-            'timeupdate',
-            this.handleAudioTimeUpdate.bind(this),
-        );
+        //Get all relevant nodes from shadow-root
+        this.videoPlayer = this.shadowRoot.getElementById("video-element");
+        this.videoCanvas = shadowRoot.getElementById("canvas-video");
+        this.videoCanvas.hidden = true;
 
         /**
-         * MPEG-DASH Video-Player
+         * MPEG-DASH Video-Player: Loading and initializing
          * @type {dashjs.MediaPlayerClass}
          */
         this.player = dashjs.MediaPlayer().create();
         //URL is hardcoded, because javascript cant read URL of Filesystem (Security)
         var url = "../../res/video/" + name;
-        this.player.initialize(this.shadowRoot.querySelector("#videoPlayer"), url, true);
+        this.player.initialize(this.videoPlayer, url, true);
 
-        //videoPlayer = this.shadowRoot.getElementById("video-bg");
-        this.videoPlayer = this.shadowRoot.getElementById("videoPlayer");
-        this.videoCanvas = shadowRoot.getElementById("canvas-video");
-        this.videoCanvas.hidden = true;
 
-        console.log(this.shadowRoot.querySelector("#videoPlayer").getBoundingClientRect);
+
     }
 
-    renderVideoFilters(){
-        let self = this;
-        self.invert.render();
-        self.chromaKey.render();
-    }
-
+    /**
+     * Template for shadow-dom/Custom HTML Video-Track Element
+     * @returns {string}
+     */
     template() {
         const html = String.raw;
 
@@ -82,7 +60,7 @@ export default class VideoTrack extends HTMLElement {
                     left: 0;
                     right: 0;
                 }
-                #videoPlayer {
+                #video-element {
                     position: center;
                     width: 100%;
                     height: auto;
@@ -90,7 +68,7 @@ export default class VideoTrack extends HTMLElement {
             </style>
             
             <div class="canvas-wrapper" id="wrapper">
-                    <video id="videoPlayer" controls="true" ></video>
+                    <video id="video-element" controls="true" ></video>
                     <canvas id="canvas-video"></canvas>
             </div>
             
@@ -108,66 +86,72 @@ export default class VideoTrack extends HTMLElement {
         `;
     }
 
+    /**
+     * Called upon startup to connect button-callbacks
+     */
     connectedCallback() {
 
         let self = this;
 
-
-        this.removeButton = this.shadowRoot.querySelector("#removeTrack");
-
-        /*
-            Registriere Buttons
-         */
-        let chromaKeyingButton = this.shadowRoot.getElementById("addChromaKeying");
+        let chromaKeyingButton = self.shadowRoot.getElementById("addChromaKeying");
         chromaKeyingButton.addEventListener("click", function(){
             self.handleFilterBtns(chromaKeyingFilter);
 
         }, false);
 
-        let invertButton = this.shadowRoot.getElementById("addInvertFilter");
+        let invertButton = self.shadowRoot.getElementById("addInvertFilter");
         invertButton.addEventListener("click", function(){
             self.handleFilterBtns(invertFilter);
 
         }, false);
 
-        this.removeButton.addEventListener('click', function () {
+        let removeButton = self.shadowRoot.getElementById("removeTrack");
+        removeButton.addEventListener('click', function () {
             self.player.reset();
             self.shadowRoot.innerHTML = null;
             TrackManager.deleteVideoTrack(self.id);
         });
     }
 
+    /**
+     * Function to handle the Filter Buttons: set, change or disable filter on canvas (overlaying the video)
+     * @param newFilter the filter that is to be applied
+     */
     handleFilterBtns(newFilter){
         let self = this;
 
+        //if empty or different filter
         if(self.videoFilter == null || self.videoFilter.filter != newFilter){
             self.videoCanvas.hidden = false;
-            self.videoFilter = new chromaKeying(self.videoPlayer, self.videoCanvas, newFilter, false);
+            self.videoFilter = new videoFilter(self.videoPlayer, self.videoCanvas, newFilter, false);
             self.videoFilter.toggleFilter();
             renderVideoFilter();
-        }else if(self.videoFilter == newFilter){
+        }
+        //if filter is already active, disable the filter
+        else if(self.videoFilter == newFilter){
             self.videoCanvas.hidden = false;
             self.videoFilter.toggleFilter();
             console.log(self.videoCanvas);
         }
+        //in all other cases invert filter-activity
         else{
             self.videoCanvas.hidden = !self.videoCanvas.hidden;
             self.videoFilter.toggleFilter();
         }
 
+        //recursive function to repetedly update the filter on the video
         function renderVideoFilter(){
             self.videoFilter.render();
             requestAnimationFrame(renderVideoFilter);
         }
     }
-
-
-    handleAudioTimeUpdate() {
-        const progress = this.audio.currentTime / this.audio.duration;
-        this.elProgress.style.width = (progress * 100) + '%';
-    }
 }
 
+/**
+ * Function to apply chroma keying on video
+ * @param frame
+ * @param length
+ */
 function chromaKeyingFilter(frame, length) {
     for (let i = 0; i < length; i++) {
         frame.data[i * 4 + 3] = (frame.data[i * 4 + 0] +
@@ -176,6 +160,11 @@ function chromaKeyingFilter(frame, length) {
     }
 }
 
+/**
+ * Function to invert all frames of a video
+ * @param frame
+ * @param length
+ */
 function invertFilter(frame, length) {
     for (let i = 0; i < length; i++) {
         frame.data[i * 4 + 0] = 255 - frame.data[i * 4 + 0];

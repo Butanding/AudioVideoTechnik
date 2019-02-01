@@ -1,4 +1,4 @@
-class chromaKeying {
+class videoFilter {
 
 
     constructor(videoEl, canvasEl, filterFunction, applyFilter) {
@@ -56,4 +56,4 @@ class chromaKeying {
 
 }
 
-export default chromaKeying;
+export default videoFilter;
