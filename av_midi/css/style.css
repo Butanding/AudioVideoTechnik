@@ -64,3 +64,12 @@ body  {
     margin: 0;
     padding: 0;
 }
+
+
+.marquee {
+    width: 300px;
+    overflow: hidden;
+    border:1px solid #ccc;
+    background: black;
+    color: rgb(202, 255, 195);
+}
