@@ -45,6 +45,7 @@ export default class AudioTrack extends HTMLElement {
 
         this.lowshelfVal = 0;
         this.highshelfVal = 20000;
+        this.bandpassVal = 10000;
 
         // initial values regarding effects: new AudioTrack will use these values;
         // those values are also needed to restore effects after `pause`
@@ -54,6 +55,7 @@ export default class AudioTrack extends HTMLElement {
         this.bitcrusherNormFreq = 1.0;
         this.lowshelfNode;
         this.highshelfNode;
+        this.bandpassNode;
 
         // declare all the nodes necessary to implement effects
         this.gainNode;                      // for volume
@@ -234,6 +236,21 @@ export default class AudioTrack extends HTMLElement {
         this.highshelfSlider.value = this.highshelfVal;
         this.highshelfLabel.textContent = this.highshelfVal + 'Hz';
 
+        /**
+         * Bandpass Web-Elements
+         * @type {HTMLElement}
+         */
+        this.bandpassValSlider = this.shadowRoot.getElementById('bandpassValSlider');
+        this.bandpassFreqLabel = this.shadowRoot.getElementById('bandpassfreq');
+
+        this.bandpassValSlider.addEventListener('input', function () {
+            self.changeBandpass(self.bandpassValSlider.value);
+        });
+
+        this.bandpassValSlider.value = this.bandpassVal / 20000 * 127;
+        this.bandpassFreqLabel.textContent = Math.floor(this.bandpassVal) + 'Hz';
+
+
     }
 
     /**
@@ -383,12 +400,19 @@ export default class AudioTrack extends HTMLElement {
         this.highshelfNode.frequency.value = this.highshelfVal;
         this.highshelfNode.gain.value = -12;
 
+        //Initialize the bandpass filter
+        this.bandpassNode = this.audioCtx.createBiquadFilter();
+        this.bandpassNode.type = "peaking";
+        this.bandpassNode.frequency.value = 1000.0;
+        this.bandpassNode.Q.value = 700;
+
         /**
          * Succeedingly Connect all Nodes together
          */
         //JEDER NODE MUSS HIER NOCH CONNECTED WERDEN
         this.source.connect(this.lowshelfNode);
-        this.lowshelfNode.connect(this.highshelfNode);
+        this.lowshelfNode.connect(this.bandpassNode);
+        this.bandpassNode.connect(this.highshelfNode);
         this.highshelfNode.connect(this.gainNode);
         this.gainNode.connect(this.audioCtx.destination);
         //Bitcrusher currently disabled
@@ -500,6 +524,21 @@ export default class AudioTrack extends HTMLElement {
         }
         this.highshelfSlider.value = value;
         this.highshelfLabel.textContent = Math.floor(this.highshelfVal) + 'Hertz';
+    }
+
+    /**
+     * Alter the freuquency of the bandpass Node
+     *
+     * @param value Value from midicontroller or gui-slider (0 - 127)
+     */
+    changeBandpass(value) {
+        let step = 20000 / 127;
+        this.bandpassVal = value * step;
+        if (this.source != null) {
+            this.bandpassNode.frequency.value = this.bandpassVal;
+        }
+        this.bandpassValSlider.value = value;
+        this.bandpassFreqLabel.textContent = Math.floor(this.bandpassVal) + 'Hz';
     }
 
     getIdByName(name) {
