@@ -57,6 +57,9 @@ export default class AudioTrack extends HTMLElement {
         this.highshelfNode;
         this.bandpassNode;
 
+        //Visuals
+        this.formAnalyser;
+
         // declare all the nodes necessary to implement effects
         this.gainNode;                      // for volume
         this.bitcrusherNode;                //For Bitcrusher
@@ -250,6 +253,59 @@ export default class AudioTrack extends HTMLElement {
         this.bandpassValSlider.value = this.bandpassVal / 20000 * 127;
         this.bandpassFreqLabel.textContent = Math.floor(this.bandpassVal) + 'Hz';
 
+        /**
+         * VISAULIZER
+         * @type {HTMLElement}
+         */
+
+        this.visualizerCanvas = document.getElementById('visualCanvas');
+        this.visualizerCtx = this.visualizerCanvas.getContext('2d');
+
+        this.VISUALIZERWIDTH = this.visualizerCanvas.width;
+        this.VISUALIZERHEIGHT = this.visualizerCanvas.height;
+
+        let wFpsInterval, wNow, wThen, wStart, wElapsed;
+
+        this.initDrawVisuals = function (fps) {
+            wFpsInterval = 1 / fps;
+            wThen = self.audioCtx.currentTime;
+            wStart = wThen;
+            this.drawVisual();
+        };
+
+        this.drawVisual = function () {
+            requestAnimationFrame(self.drawVisual);
+            wNow = self.audioCtx.currentTime;
+            wElapsed = wNow - wThen;
+            if (wElapsed > wFpsInterval && self.isPlaying) {
+                wThen = wNow - (wElapsed % wFpsInterval);
+                // draw
+                self.visualizerCtx.clearRect(0, 0, self.VISUALIZERWIDTH, self.VISUALIZERHEIGHT);
+                self.formAnalyser.getByteTimeDomainData(self.visualizerDataArr);
+
+                self.visualizerCtx.fillStyle = '#1d1e1f';
+                self.visualizerCtx.fillRect(0, 0, self.VISUALIZERWIDTH, self.VISUALIZERHEIGHT);
+                self.visualizerCtx.lineWidth = 2;
+                self.visualizerCtx.strokeStyle = '#efefef';
+                self.visualizerCtx.beginPath();
+                let sliceWidth = self.VISUALIZERWIDTH * 1.0 / self.visualizerBufferSize;
+                let x = 0;
+                for (let i = 0; i < self.visualizerBufferSize; i++) {
+                    var v = self.visualizerDataArr[i] / 128.0;
+                    var y = v * self.VISUALIZERHEIGHT / 2;
+
+                    if (i === 0) {
+                        self.visualizerCtx.moveTo(x, y);
+                    } else {
+                        self.visualizerCtx.lineTo(x, y);
+                    }
+
+                    x += sliceWidth;
+                }
+                self.visualizerCtx.lineTo(self.VISUALIZERWIDTH, self.VISUALIZERHEIGHT / 2);
+                self.visualizerCtx.stroke();
+            }
+        };
 
     }
 
@@ -313,6 +369,7 @@ export default class AudioTrack extends HTMLElement {
         this.isPlaying = true;
         this.source.loop = this.isLooping;
         this.startDrawingProgressBar(5);
+        this.initDrawVisuals(30);
 
 
         let self = this;
@@ -320,6 +377,8 @@ export default class AudioTrack extends HTMLElement {
             console.log('ended');
             self.isPlaying = false;
             self.playbackTime = 0;
+            self.visualizerCtx.clearRect(0, 0, self.VISUALIZERWIDTH, self.VISUALIZERHEIGHT);
+
         })
     }
 
@@ -342,6 +401,7 @@ export default class AudioTrack extends HTMLElement {
             console.log('stopping');
             this.playbackTime = 0;
             this.isPlaying = false;
+            this.visualizerCtx.clearRect(0, 0, this.VISUALIZERWIDTH, this.VISUALIZERHEIGHT);
             this.source.stop(0);
             //this.progressBar.value = 0;
         }
@@ -406,17 +466,26 @@ export default class AudioTrack extends HTMLElement {
         this.bandpassNode.frequency.value = 1000.0;
         this.bandpassNode.Q.value = 700;
 
+        //Initialize the Visualizer
+        this.formAnalyser = this.audioCtx.createAnalyser();
+        this.formAnalyser.fftSize = 2048;
+        this.visualizerBufferSize = this.formAnalyser.frequencyBinCount;
+        this.visualizerDataArr = new Uint8Array(this.visualizerBufferSize);
+
         /**
          * Succeedingly Connect all Nodes together
          */
-        //JEDER NODE MUSS HIER NOCH CONNECTED WERDEN
+        //Connect Filters and EQs
         this.source.connect(this.lowshelfNode);
         this.lowshelfNode.connect(this.bandpassNode);
         this.bandpassNode.connect(this.highshelfNode);
         this.highshelfNode.connect(this.gainNode);
-        this.gainNode.connect(this.audioCtx.destination);
         //Bitcrusher currently disabled
         this.bitcrusherNode.connect(this.audioCtx.destination);
+
+        //Connect Outputs
+        this.gainNode.connect(this.formAnalyser);
+        this.gainNode.connect(this.audioCtx.destination);
     }
 
     /**

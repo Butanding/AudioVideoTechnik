@@ -27,6 +27,14 @@
     color: yellow;
     background-color: #1d1e1f;
 }
+#visualCanvas{
+    padding-left: 6px;
+    padding-right: 6px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 100%;
+}
 
 .controller{
     margin-top:10px;
