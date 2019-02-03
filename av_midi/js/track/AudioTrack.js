@@ -44,6 +44,7 @@ export default class AudioTrack extends HTMLElement {
         this.lengthOfTrack;
 
         this.lowshelfVal = 0;
+        this.highshelfVal = 20000;
 
         // initial values regarding effects: new AudioTrack will use these values;
         // those values are also needed to restore effects after `pause`
@@ -52,6 +53,7 @@ export default class AudioTrack extends HTMLElement {
         this.bitcrusherBitSize = 16;
         this.bitcrusherNormFreq = 1.0;
         this.lowshelfNode;
+        this.highshelfNode;
 
         // declare all the nodes necessary to implement effects
         this.gainNode;                      // for volume
@@ -217,6 +219,21 @@ export default class AudioTrack extends HTMLElement {
         this.lowshelfSlider.value = 0;
         this.lowshelfFreqLabel.textContent = this.lowshelfVal + 'Hertz';
 
+        /**
+         * Highshelf Web-Elements
+         * @type {HTMLElement}
+         */
+
+        this.highshelfSlider = this.shadowRoot.getElementById('highshelfslider');
+        this.highshelfLabel = this.shadowRoot.getElementById('highshelffreqLabel');
+
+        this.highshelfSlider.addEventListener('input', function () {
+            self.changeHighshelf(self.highshelfSlider.value);
+        });
+
+        this.highshelfSlider.value = this.highshelfVal;
+        this.highshelfLabel.textContent = this.highshelfVal + 'Hz';
+
     }
 
     /**
@@ -360,12 +377,19 @@ export default class AudioTrack extends HTMLElement {
         this.lowshelfNode.frequency.value = this.lowshelfVal;
         this.lowshelfNode.gain.value = -12;
 
+        //Initialize the highshelf filter
+        this.highshelfNode = this.audioCtx.createBiquadFilter();
+        this.highshelfNode.type = 'highshelf';
+        this.highshelfNode.frequency.value = this.highshelfVal;
+        this.highshelfNode.gain.value = -12;
+
         /**
          * Succeedingly Connect all Nodes together
          */
         //JEDER NODE MUSS HIER NOCH CONNECTED WERDEN
         this.source.connect(this.lowshelfNode);
-        this.lowshelfNode.connect(this.gainNode);
+        this.lowshelfNode.connect(this.highshelfNode);
+        this.highshelfNode.connect(this.gainNode);
         this.gainNode.connect(this.audioCtx.destination);
         //Bitcrusher currently disabled
         this.bitcrusherNode.connect(this.audioCtx.destination);
@@ -461,6 +485,21 @@ export default class AudioTrack extends HTMLElement {
             this.lowshelfNode.frequency.value = this.lowshelfVal;
         this.lowshelfSlider.value = value;
         this.lowshelfFreqLabel.textContent = Math.floor(this.lowshelfVal) + 'Hertz';
+    }
+
+    /**
+     * Alter the frequency of the highshelf Node
+     *
+     * @param value Value from midicontroller or gui-slider (0 - 127)
+     */
+    changeHighshelf(value) {
+        let step = 20000 / 127;
+        this.highshelfVal = value * step;
+        if (this.source != null) {
+            this.highshelfNode.frequency.value = this.highshelfVal;
+        }
+        this.highshelfSlider.value = value;
+        this.highshelfLabel.textContent = Math.floor(this.highshelfVal) + 'Hertz';
     }
 
     getIdByName(name) {
