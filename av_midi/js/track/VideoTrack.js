@@ -1,5 +1,6 @@
 import TrackManager from "../TrackManager.js";
 import videoFilter from "../manipulators/VideoFilter.js";
+import contentLoader from "../utils/contentLoader.js";
 
 /**
  * Class to handle VideoTrack Element and all it's Filters
@@ -21,8 +22,9 @@ export default class VideoTrack extends HTMLElement {
         this.animationID = null;
 
         //Create and fill shadow-root
+        let htmlTemplate = contentLoader("../../html/VideoTrackTemplate.html");
         const shadowRoot = this.attachShadow({mode: 'open'});
-        shadowRoot.innerHTML = this.template();
+        shadowRoot.innerHTML = htmlTemplate;
 
         //Get all relevant nodes from shadow-root
         this.videoPlayer = this.shadowRoot.getElementById("video-element");
@@ -37,52 +39,9 @@ export default class VideoTrack extends HTMLElement {
         //URL is hardcoded, because javascript cant read URL of Filesystem (Security)
         var url = "../../res/video/" + name;
         this.player.initialize(this.videoPlayer, url, true);
-    }
 
-    /**
-     * Template for shadow-dom/Custom HTML Video-Track Element
-     * @returns {string}
-     */
-    template() {
-        const html = String.raw;
+        this.player.$
 
-        return html`
-            <style>
-                #wrapper {
-                    position: relative;
-                }
-                #canvas-video {
-                    position: absolute;
-                    background-color: yellow;
-                    top: 0;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                }
-                #video-element {
-                    position: center;
-                    width: 100%;
-                    height: auto;
-            }
-            </style>
-            
-            <div class="canvas-wrapper" id="wrapper">
-                    <video id="video-element" controls="true" ></video>
-                    <canvas id="canvas-video"></canvas>
-            </div>
-            
-            <div>                
-                <button id="removeTrack" aria-checked="false">
-                  <span>Remove Video</span>
-                </button>
-                <button id="addChromaKeying" aria-checked="false">
-                  <span>Add Chroma Keying</span>
-                </button>
-                <button id="addInvertFilter" aria-checked="false">
-                  <span>Add Invert Filter</span>
-                </button>
-            </div>
-        `;
     }
 
     /**
@@ -178,5 +137,6 @@ function invertFilter(frame, length) {
         frame.data[i * 4 + 2] = 255 - frame.data[i * 4 + 2];
     }
 }
+
 
 customElements.define('video-player', VideoTrack);

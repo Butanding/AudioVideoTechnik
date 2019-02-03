@@ -1,0 +1,35 @@
+<style>
+    #wrapper {
+        position: relative;
+    }
+    #canvas-video {
+        position: absolute;
+        background-color: yellow;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+    #video-element {
+        position: center;
+        width: 100%;
+        height: auto;
+    }
+</style>
+
+<div class="canvas-wrapper" id="wrapper">
+    <video id="video-element" controls="true" ></video>
+    <canvas id="canvas-video"></canvas>
+</div>
+
+<div>
+    <button id="removeTrack" aria-checked="false">
+        <span>Remove Video</span>
+    </button>
+    <button id="addChromaKeying" aria-checked="false">
+        <span>Add Chroma Keying</span>
+    </button>
+    <button id="addInvertFilter" aria-checked="false">
+        <span>Add Invert Filter</span>
+    </button>
+</div>

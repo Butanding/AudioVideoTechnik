@@ -91,8 +91,6 @@ function addVideoComponentToUI(component) {
 // Hier startet die App
 document.addEventListener('DOMContentLoaded', () => {
 
-    console.log("START");
-
         //Get all Input-Selectors from index.html
         let audioUploadButton = document.getElementById('uploadAudioTrack');
         audioUploadButton.addEventListener('change', handleFileSelect, false);
