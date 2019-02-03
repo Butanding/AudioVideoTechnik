@@ -21,6 +21,27 @@
         <span id="playbackrate" class="effectvalue"></span>
         <input class="slider" id="playbackspeedslider" type="range"  min="0" max="127">
 
+        <!--Lowshelf Elements-->
+        <div id="lowshelf" class="effectwrapper">
+            <span class="effectlabel">lowshelf</span>
+            <span id="lowshelffreqlabel" class="effectvalue"></span>
+            <input type="range" id="lowshelfslider" class="slider" min="0" max="127">
+        </div>
+
+        <!--Bitcrusher Slider-->
+        <p>Bitcrusher</p>
+
+        <span id="bitcrusherBitsLabel" class="effectvalue">Bit-Size</span>
+        <input class="slider" id="bitcrusherBitsSlider" type="range"  min="1" max="16" value="4">
+
+
+        <span id="bitcrusherNormFreqLabel" class="effectvalue">Norm-Frequency</span>
+        <input class="slider" id="bitcrusherNormFreqSlider" type="range"  min="0.0" max="1.0" step ="0.1" value="0.1">
+
+        <button id="bitcrusher" role="switch" aria-checked="false">
+            <span>Bitcrusher</span>
+        </button>
+
 
         <!--Remove Track Button-->
         <button id="removeTrack" aria-checked="false">

@@ -43,29 +43,19 @@ export default class AudioTrack extends HTMLElement {
         this.playbackTime = 0;
         this.lengthOfTrack;
 
+        this.lowshelfVal = 0;
+
         // initial values regarding effects: new AudioTrack will use these values;
         // those values are also needed to restore effects after `pause`
         this.volumeLevel = 1;
-        this.lowshelfValue = 0;
-        this.bandpassValue = 10000;
-        this.highshelfValue = 20000;
         this.playbackRate = 1;
-        this.delayValue = 0;
-        this.reverbDryWetValue = 0.0;
-        this.reverbFeedbackValue = 0.0;
-        this.reverbLowpass = 200;
+        this.bitcrusherBitSize = 16;
+        this.bitcrusherNormFreq = 1.0;
+        this.lowshelfNode;
 
         // declare all the nodes necessary to implement effects
         this.gainNode;                      // for volume
-        this.lowshelfNode;                   // for lowpass filter
-        this.bandpassNode;                  //for bandpass filter
-        this.highshelfNode;                  // for high pass filter
-        this.delayNode;                     // for delay
-
-
-        this.convolverNode;                 // for reverb
-        this.formAnalyser;                  // for analyzing & drawing wave form
-        this.freqAnalyser;                  // for analyzing & drawing frequency bars
+        this.bitcrusherNode;                //For Bitcrusher
 
 
         // --------------------------------------------------
@@ -183,11 +173,50 @@ export default class AudioTrack extends HTMLElement {
         this.playbackRateLabel = this.shadowRoot.getElementById('playbackrate');
 
         this.playbackRateSlider.addEventListener('input', function () {
-            self.changeSpeed(self.playbackRateSlider.value)
+            console.log("TEST");
+            self.changeSpeed(self.playbackRateSlider.value);
         });
 
         this.playbackRateSlider.value = 25;
         this.playbackRateLabel.textContent = this.playbackRate + 'x';
+
+
+        /**
+         * BITCRUSHER SLIDERS
+         * currently no sliders, only button
+        */
+        this.bitcrusherBitSizeSlider = this.shadowRoot.getElementById('bitcrusherBitsSlider');
+        this.bitcrusherBitSizeLabel = this.shadowRoot.getElementById('bitcrusherBitsLabel');
+        this.bitcrusherNormFreqSlider = this.shadowRoot.getElementById('bitcrusherNormFreqSlider');
+        this.bitcrusherNormFreqLabel = this.shadowRoot.getElementById('bitcrusherNormFreqLabel');
+
+        this.bitcrusherBitSizeSlider.addEventListener('input', function () {
+            self.bitcrusherBitSizeLabel.innerText = ("Bit-Size: " + self.bitcrusherBitSizeSlider.value);
+            self.changeBitcrusher(self.bitcrusherBitSizeSlider.value, self.bitcrusherNormFreqSlider.value);
+        });
+        this.bitcrusherNormFreqSlider.addEventListener('input', function () {
+            self.bitcrusherNormFreqLabel.innerText = ("Norm-Frequency: " + self.bitcrusherNormFreqSlider.value);
+            self.changeBitcrusher(self.bitcrusherBitSizeSlider.value, self.bitcrusherNormFreqSlider.value);
+        });
+
+        //this.bitcrusherBitSizeSlider = this.shadowRoot.getElementById('bitcrusherBitsSlider');
+
+
+        /**
+         * LOWSHELF SLIDERS
+         * @type {HTMLElement}
+         */
+
+        this.lowshelfSlider = this.shadowRoot.getElementById('lowshelfslider');
+        this.lowshelfFreqLabel = this.shadowRoot.getElementById('lowshelffreqlabel');
+
+        this.lowshelfSlider.addEventListener('input', function () {
+            self.changeLowshelf(self.lowshelfSlider.value);
+        });
+
+        this.lowshelfSlider.value = 0;
+        this.lowshelfFreqLabel.textContent = this.lowshelfVal + 'Hertz';
+
     }
 
     /**
@@ -303,6 +332,8 @@ export default class AudioTrack extends HTMLElement {
             this.togglePlayback();
     }
 
+
+
     /**
      * Initializes and connects all nodes
      */
@@ -318,18 +349,73 @@ export default class AudioTrack extends HTMLElement {
         //Playbackrate
         this.source.playbackRate.value = this.playbackRate;
 
-        //HIER KOMMEN NOCH ALLE ANDEREN NODES/FILTE DAZU
+        //Bitcrusher
+        this.bitcrusherNode = this.audioCtx.createScriptProcessor(4096, 1, 1);
+        //this.changeBitcrusher(this.bitcrusherBitSize, this.bitcrusherNormFreq); //Initialize the Bitcrusher with default/no effect
+
+
+        //Initializing the lowshelf filter
+        this.lowshelfNode = this.audioCtx.createBiquadFilter();
+        this.lowshelfNode.type = 'lowshelf';
+        this.lowshelfNode.frequency.value = this.lowshelfVal;
+        this.lowshelfNode.gain.value = -12;
 
         /**
          * Succeedingly Connect all Nodes together
          */
         //JEDER NODE MUSS HIER NOCH CONNECTED WERDEN
-        this.source.connect(this.gainNode);
+        this.source.connect(this.lowshelfNode);
+        this.lowshelfNode.connect(this.gainNode);
         this.gainNode.connect(this.audioCtx.destination);
-
-
-
+        //Bitcrusher currently disabled
+        this.bitcrusherNode.connect(this.audioCtx.destination);
     }
+
+    /**
+     * Bitcrusher
+     *
+     * This works by quantizing the input signal.
+     * In other words, it samples the input signal every so often,
+     * then “holds” that sample until it’s time to sample again (based on the bits and normfreq settings).
+     */
+    changeBitcrusher(bits, normfreq){
+
+
+        if(this.bitcrusherNode.onaudioprocess != null){
+            console.log("NOT NULL");
+            this.bitcrusherNode.onaudioprocess = null;
+            this.gainNode.connect(this.audioCtx.destination);
+            //this.changeBitcrusher(bits, normfreq);
+
+        }
+
+        this.bitcrusherNode.bits = bits; // between 1 and 16
+        this.bitcrusherNode.normfreq = normfreq; // between 0.0 and 1.0
+
+        this.bitcrusherNode.onaudioprocess = function(e) {
+            var step = Math.pow(1/2, e.srcElement.bits);
+            var phaser = 0;
+            var last = 0;
+            console.log("Normfreq: " + e.srcElement.normfreq);
+            console.log("Bitsize: " + e.srcElement.bits);
+
+            var input = e.inputBuffer.getChannelData(0);
+            var output = e.outputBuffer.getChannelData(0);
+            for (var i = 0; i < e.inputBuffer.length; i++) {
+                phaser += e.srcElement.normfreq;
+                if (phaser >= 1.0) {
+                    phaser -= 1.0;
+                    last = step * Math.floor(input[i] / step + 0.5);
+                }
+                output[i] = last;
+            }
+        };
+
+
+        this.gainNode.connect(this.bitcrusherNode);
+        this.bitcrusherNode.connect(this.audioCtx.destination);
+
+    };
 
     /**
      * Changes volume
@@ -361,6 +447,20 @@ export default class AudioTrack extends HTMLElement {
             this.startTime = this.audioCtx.currentTime;
         }
         this.updateCurrentTimeLabel();
+    }
+
+    /**
+     * Alter the frequency of the lowshelf Node
+     *
+     * @param value Value from midicontroller or gui-slider (0 - 127)
+     */
+    changeLowshelf(value) {
+        let step = 20000 / 127;
+        this.lowshelfVal = value * step;
+        if (this.source != null)
+            this.lowshelfNode.frequency.value = this.lowshelfVal;
+        this.lowshelfSlider.value = value;
+        this.lowshelfFreqLabel.textContent = Math.floor(this.lowshelfVal) + 'Hertz';
     }
 
     getIdByName(name) {
