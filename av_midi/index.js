@@ -4,8 +4,9 @@ let randomVideoURL = [
     "http://dash.edgesuite.net/akamai/bbb_30fps/bbb_30fps.mpd",
     "https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd",
     "http://yt-dash-mse-test.commondatastorage.googleapis.com/media/car-20120827-manifest.mpd",
-    "https://bitmovin-a.akamaihd.net/content/playhouse-vr/mpds/105560.mpd",
-    "http://www.bok.net/dash/tears_of_steel/cleartext/stream.mpd"
+    "http://www.bok.net/dash/tears_of_steel/cleartext/stream.mpd",
+    "https://bitdash-a.akamaihd.net/content/sintel/sintel.mpd",
+    "https://wowzaec2demo.streamlock.net/vod-multitrack/_definst_/smil:ElephantsDream/ElephantsDream.smil/manifest.mpd"
 ];
 
 //Handling Input of Tracks
