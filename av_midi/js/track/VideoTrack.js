@@ -29,7 +29,11 @@ export default class VideoTrack extends HTMLElement {
         //Get all relevant nodes from shadow-root
         this.videoPlayer = this.shadowRoot.getElementById("video-element");
         this.videoCanvas = shadowRoot.getElementById("canvas-video");
-        this.videoCanvas.hidden = true;
+        this.videoCanvas.hidden = true; //Hide-Canvas on Startup, unhide later on
+
+        this.videoMarquee = this.shadowRoot.getElementById("marquee");
+        this.videoMarquee.hidden = true;
+
 
         /**
          * MPEG-DASH Video-Player: Loading and initializing
@@ -40,7 +44,6 @@ export default class VideoTrack extends HTMLElement {
         var url = "../../res/video/" + name;
         this.player.initialize(this.videoPlayer, url, true);
 
-        this.player.$
 
     }
 
@@ -62,6 +65,24 @@ export default class VideoTrack extends HTMLElement {
             self.handleFilterBtns(invertFilter);
 
         }, false);
+
+        let marqueeCheckbox = self.shadowRoot.getElementById("marqueeCheckbox");
+        marqueeCheckbox.addEventListener('change', (event) => {
+            if (event.target.checked) {
+                self.videoMarquee.hidden = false;
+            } else {
+                self.videoMarquee.hidden = true;
+            }
+        });
+
+        let marqueeUpdateButton = self.shadowRoot.getElementById("marqueeUpdate");
+        marqueeUpdateButton.addEventListener("click", function(){
+            console.log("marquee Update");
+            let marqueContent = self.shadowRoot.getElementById("marqueeText");
+            let marqueNewContent = self.shadowRoot.getElementById("marqueeNewText");
+            marqueContent.innerText = marqueNewContent.value;
+        }, false);
+
 
         let removeButton = self.shadowRoot.getElementById("removeTrack");
         removeButton.addEventListener('click', function () {
@@ -110,6 +131,10 @@ export default class VideoTrack extends HTMLElement {
             self.animationID = requestAnimationFrame(renderVideoFilter);
         }
     }
+
+    handleMarquee(){
+
+    }
 }
 
 /**
@@ -137,6 +162,5 @@ function invertFilter(frame, length) {
         frame.data[i * 4 + 2] = 255 - frame.data[i * 4 + 2];
     }
 }
-
 
 customElements.define('video-player', VideoTrack);
