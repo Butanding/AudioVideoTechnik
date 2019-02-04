@@ -37,7 +37,7 @@ export default class VideoTrack extends HTMLElement {
          */
         this.player = dashjs.MediaPlayer().create();
         //URL is hardcoded, because javascript cant read URL of Filesystem (Security)
-        var url = "../../res/video/" + name;
+        var url = name ;
         this.player.initialize(this.videoPlayer, url, true);
 
         this.player.$
