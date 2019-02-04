@@ -178,6 +178,32 @@ function playAll(){
     }
 }
 
+function loopAll() {
+    for (let i=0; i<4; i++){
+        if(TrackManager.getAudioTrack(i) != null){
+            if(TrackManager.getAudioTrack(i).isPlaying){
+                TrackManager.getAudioTrack(i).isLooping = true;
+                TrackManager.getAudioTrack(i).source.loop = true;
+                TrackManager.getAudioTrack(i).shadowRoot.getElementById("loopAudioCheckbox").checked = true;
+
+            }
+        }
+    }
+}
+
+function unloopAll() {
+    for (let i=0; i<4; i++){
+        if(TrackManager.getAudioTrack(i) != null){
+            if(TrackManager.getAudioTrack(i).isPlaying){
+                TrackManager.getAudioTrack(i).isLooping = false;
+                TrackManager.getAudioTrack(i).source.loop = false;
+                TrackManager.getAudioTrack(i).shadowRoot.getElementById("loopAudioCheckbox").checked = false;
+
+            }
+        }
+    }
+}
+
 function muteAll(){
     for (let i=0; i<4; i++){
         if(TrackManager.getAudioTrack(i) != null){
@@ -268,7 +294,6 @@ function resetAllVideos() {
 }
 
 
-
 // Hier startet die App
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -304,6 +329,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let playAllChannels = document.getElementById('playAllChannels');
         playAllChannels.addEventListener('click', playAll, false);
+
+        let loopAllChannels = document.getElementById('loopAllChannels');
+        loopAllChannels.addEventListener('click', loopAll, false);
+
+        let unloopAllChannels = document.getElementById('unloopAllChannels');
+        unloopAllChannels.addEventListener('click', unloopAll, false);
 
         let muteAllChannels = document.getElementById('muteAllChannels');
         muteAllChannels.addEventListener('click', muteAll, false);
