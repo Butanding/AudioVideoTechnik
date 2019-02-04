@@ -207,24 +207,67 @@ function resetAll(){
 
 
 function loadRandomVideoSamples() {
-
+    for(let i=0; i<2; i++){
+        if (emptyVideoSlotCheck()) {
+            let trackNumber = TrackManager.findFirstEmptyVideoTrack();
+            //Select random video Track from URL list and load Video
+            let url = randomVideoURL[Math.floor(Math.random() * randomVideoURL.length+1)];
+            TrackManager.addVideoTrack(trackNumber, url);
+            addVideoComponentToUI(TrackManager.getVideoTrack(trackNumber));
+        }
+    }
 }
 
 function pauseAllVideos() {
-
+    for(let i=0; i<2; i++){
+        if(TrackManager.getVideoTrack(i) != null){
+            TrackManager.getVideoTrack(i).player.pause();
+        }
+    }
 }
 
 function playAllVideos() {
-
+    for(let i=0; i<2; i++){
+        if(TrackManager.getVideoTrack(i) != null){
+            TrackManager.getVideoTrack(i).player.play();
+        }
+    }
 }
 
 function muteAllVideos() {
+    for(let i=0; i<2; i++){
+        if(TrackManager.getVideoTrack(i) != null){
+            TrackManager.getVideoTrack(i).player.setVolume(0);
+        }
+    }
+}
 
+function unmuteAllVideos() {
+    for(let i=0; i<2; i++){
+        if(TrackManager.getVideoTrack(i) != null){
+            TrackManager.getVideoTrack(i).player.setVolume(0.7);
+        }
+    }
 }
 
 function resetAllVideos() {
-
+    for(let i=0; i<2; i++){
+        if(TrackManager.getVideoTrack(i) != null){
+            //Stop possible Animation of Canvas-Filter
+            cancelAnimationFrame(TrackManager.getVideoTrack(i).animationID);
+            //Remove Canvas
+            TrackManager.getVideoTrack(i).videoCanvas = null;
+            //Remove Dashjs Player
+            TrackManager.getVideoTrack(i).player.reset();
+            //Empty Shadow-Root
+            TrackManager.getVideoTrack(i).shadowRoot.innerHTML = null;
+            //Delete Video from Global Trackmanager
+            TrackManager.deleteVideoTrack(i);
+        }
+    }
 }
+
+
 
 // Hier startet die App
 document.addEventListener('DOMContentLoaded', () => {
@@ -287,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
     muteAllVideoChannels.addEventListener('click', muteAllVideos, false);
 
     let unmuteAllVideoChannels = document.getElementById('unmuteAllVideoChannels');
-    unmuteAllVideoChannels.addEventListener('click', unmuteAll, false);
+    unmuteAllVideoChannels.addEventListener('click', unmuteAllVideos, false);
 
     let resetAllVideoChannels = document.getElementById('resetAllVideoChannels');
     resetAllVideoChannels.addEventListener('click', resetAllVideos, false);
