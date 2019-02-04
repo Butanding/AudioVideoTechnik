@@ -12,7 +12,6 @@ let randomVideoURL = [
 function handleFileSelect(evt) {
     var file = evt.target.files[0]; // FileList object only select the first File, others will be ignored
 
-    console.log(file.webkitRelativePath);
     evt.stopPropagation();
     evt.preventDefault();
 
@@ -58,23 +57,15 @@ function handleDrop(evt) {
     evt.stopPropagation();
     evt.preventDefault();
 
-    var files = evt.dataTransfer.files[0];
-    // read into memory
-    var reader = new FileReader();
-    // load element
-    reader.readAsDataURL(files);
-
-    // when our image is loaded
-    reader.onload = (function(theFile) {
-        return function(e) {
-            let url = e.target.result;
-            console.log(url)
-        };
-    })(files);
-
-
-
-    console.log(url);
+    var file = evt.dataTransfer.files[0];
+    if (file != null) {
+        if (file.type.substring(0, 5) == 'audio') {
+            if (emptyAudioSlotCheck()) {
+                console.log('file ' + file.name + ' vom typ ' + file.type + ' wird geladen');
+                loadAudioFile(file);
+            }
+        }
+    }
 }
 
 function emptyAudioSlotCheck() {
@@ -153,10 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
         //Audio-Dropzone
         dropZone[0].addEventListener('dragover', handleDragOver, false);
         dropZone[0].addEventListener('drop', handleDrop, false);
-        //Video-Dropzone
-        dropZone[1].addEventListener('dragover', handleDragOver, false);
-        dropZone[1].addEventListener('drop', handleDrop, false);
-
 
         //Get all Input-Selectors from index.html
         let audioUploadButton = document.getElementById('uploadAudioTrack');
@@ -169,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
         videoRandomButton.addEventListener('click', handleVideoURL, false);
 
         let videoURLButton = document.getElementById('submitLoadVideoURL');
-    videoURLButton.addEventListener('click', handleVideoURL, false);
+        videoURLButton.addEventListener('click', handleVideoURL, false);
 
     }
 );
