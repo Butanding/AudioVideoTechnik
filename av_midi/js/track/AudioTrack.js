@@ -342,6 +342,30 @@ export default class AudioTrack extends HTMLElement {
     }
 
     /**
+     * Loads data at given url into buffer
+     *
+     * @param url to load
+     */
+    loadUrlIntoBuffer(url) {
+        let self = this;
+        let bufferSource = this.audioCtx.createBufferSource();
+        let request = new XMLHttpRequest();
+        request.open('GET', url, true);
+        request.responseType = 'arraybuffer';
+        request.onload = function () {
+            let audioData = request.response;
+            self.audioCtx.decodeAudioData(audioData, function (buffer) {
+                bufferSource.buffer = buffer;
+                self.lengthOfTrack = buffer.duration;
+                //self.lengthOfTrackLabel.textContent = Math.floor(self.lengthOfTrack);
+            });
+        };
+        request.send();
+
+        this.reusableBuffer = bufferSource;
+    }
+
+    /**
      * Toggles playback
      */
     togglePlayback() {
