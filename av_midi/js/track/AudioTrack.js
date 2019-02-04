@@ -95,14 +95,22 @@ export default class AudioTrack extends HTMLElement {
         // --------------------------------------------------
 
         this.playBtn = this.shadowRoot.getElementById('audioPlayback');
-        //this.stopBtn = this.shadowRoot.getElementById('audioPlayback');
 
         this.playBtn.addEventListener('click', function () {
             self.togglePlayback();
         });
-        /*this.stopBtn.addEventListener('click', function () {
-            self.stopPlayback();
-        });*/
+
+        this.loopAudio = self.shadowRoot.getElementById("loopAudioCheckbox");
+        this.loopAudio.addEventListener('change', (event) => {
+            if (event.target.checked) {
+                self.isLooping = true;
+            } else {
+                self.isLooping = false;
+            }
+            //If Track is not playing, dont touch the source
+            if(this.source != null)
+                this.source.loop = this.isLooping;
+        });
 
 
         this.removeButton = this.shadowRoot.getElementById('removeTrack');
@@ -428,6 +436,21 @@ export default class AudioTrack extends HTMLElement {
             this.visualizerCtx.clearRect(0, 0, this.VISUALIZERWIDTH, this.VISUALIZERHEIGHT);
             this.source.stop(0);
             //this.progressBar.value = 0;
+        }
+    }
+
+    /**
+     * Toggles looping
+     */
+    toggleLoop() {
+        this.isLooping = !this.isLooping;
+        if (this.source != null)
+            this.source.loop = this.isLooping;
+
+        if (this.isLooping) {
+            this.shadowRoot.getElementById('loop').style.backgroundColor = '#888888';
+        } else {
+            this.shadowRoot.getElementById('loop').style.backgroundColor = '#efefef';
         }
     }
 
