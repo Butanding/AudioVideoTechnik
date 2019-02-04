@@ -101,8 +101,8 @@
             <div class="management">
                 <form>
                     <div class="form-group">
-                        <label for="uploadAudioTrack">Upload Audio file</label>
-                        <input type="file" class="form-control-file" id="uploadAudioTrack">
+                        <label for="uploadAudioTrack">Upload Audio file or just Drag and Drop here</label>
+                        <input type="file" class="form-control-file" id="uploadAudioTrack" accept="audio/*">
                     </div>
                 </form>
             </div>
@@ -166,10 +166,24 @@
             <div class="management">
                 <form>
                     <div class="form-group">
-                        <label for="uploadVideoTrack">Upload Video file</label>
-                        <input type="file" class="form-control-file" id="uploadVideoTrack">
+                        <label for="uploadVideoTrack">Upload Video file from /res/video path</label>
+                        <input type="file" class="form-control-file" id="uploadVideoTrack" accept=".mpd">
                     </div>
                 </form>
+
+                <p>
+                    <button id="loadVideoRandom" data-playing="false" role="switch" aria-checked="false">
+                        <span id="random">Load Random Video</span>
+                    </button>
+                </p>
+                <p>
+                    <label for="loadVideoURL">URL</label>
+                    <input type="text" id="loadVideoURL" name="name" required
+                           minlength="4" maxlength="10000" size="30">
+                    <button id="submitLoadVideoURL" aria-checked="false">
+                        <span id="url">Load</span>
+                    </button>
+                </p>
             </div>
         </div>
     </div>

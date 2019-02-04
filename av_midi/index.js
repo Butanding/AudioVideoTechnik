@@ -1,13 +1,20 @@
 import TrackManager from './js/TrackManager.js';
 
+let randomVideoURL = [
+    "http://dash.edgesuite.net/akamai/bbb_30fps/bbb_30fps.mpd",
+    "https://dash.akamaized.net/envivio/EnvivioDash3/manifest.mpd",
+    "http://yt-dash-mse-test.commondatastorage.googleapis.com/media/car-20120827-manifest.mpd",
+    "https://bitmovin-a.akamaihd.net/content/playhouse-vr/mpds/105560.mpd",
+    "http://www.bok.net/dash/tears_of_steel/cleartext/stream.mpd"
+];
+
 //Handling Input of Tracks
 function handleFileSelect(evt) {
-    var file = evt.target.files[0]; // FileList object
+    var file = evt.target.files[0]; // FileList object only select the first File, others will be ignored
 
     evt.stopPropagation();
     evt.preventDefault();
 
-    console.log(file.type);
     if (file.type.substring(0, 5) == 'audio') {
         if (emptyAudioSlotCheck()) {
             console.log('file ' + file.name + ' vom typ ' + file.type + ' wird geladen');
@@ -44,6 +51,45 @@ function loadRandomAudioSamples(evt){
 }
 
 
+
+function handleVideoURL(evt) {
+    console.log();
+    if (emptyVideoSlotCheck()) {
+        let trackNumber = TrackManager.findFirstEmptyVideoTrack();
+        //If manual URL, load Value from Input field
+        let url = document.getElementById("loadVideoURL").value;
+        //If random Button was pressed, select random Video
+        if(evt.srcElement.getAttribute("id") == "random"){
+            console.log("Random Video wird geladen");
+            //Select random video Track from URL list and load Video
+            url = randomVideoURL[Math.floor(Math.random() * randomVideoURL.length+1)];
+        }
+        TrackManager.addVideoTrack(trackNumber, url);
+        addVideoComponentToUI(TrackManager.getVideoTrack(trackNumber));
+    }
+
+}
+
+function handleDragOver(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+}
+
+function handleDrop(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+
+    var file = evt.dataTransfer.files[0];
+    if (file != null) {
+        if (file.type.substring(0, 5) == 'audio') {
+            if (emptyAudioSlotCheck()) {
+                console.log('file ' + file.name + ' vom typ ' + file.type + ' wird geladen');
+                loadAudioFile(file);
+            }
+        }
+    }
+}
 
 function emptyAudioSlotCheck() {
     if (TrackManager.findFirstEmptyAudioTrack() < 0) {
@@ -87,7 +133,8 @@ function loadAudioStream(streamNode) {
 
 function loadVideoFile(file) {
     let trackNumber = TrackManager.findFirstEmptyVideoTrack();
-    TrackManager.addVideoTrack(trackNumber, file.name);/*
+    let localVideoPath = "../../res/video/";
+    TrackManager.addVideoTrack(trackNumber, localVideoPath + file.name);/*
     TrackManager.getVideoTrack(trackNumber).loadFileIntoBuffer(file);*/
     addVideoComponentToUI(TrackManager.getVideoTrack(trackNumber));
 }
@@ -182,12 +229,25 @@ function resetAllVideos() {
 // Hier startet die App
 document.addEventListener('DOMContentLoaded', () => {
 
+        // dropzone
+        let dropZone = document.getElementsByClassName('management');
+        console.log(dropZone[0]);
+        //Audio-Dropzone
+        dropZone[0].addEventListener('dragover', handleDragOver, false);
+        dropZone[0].addEventListener('drop', handleDrop, false);
+
         //Get all Input-Selectors from index.html
         let audioUploadButton = document.getElementById('uploadAudioTrack');
         audioUploadButton.addEventListener('change', handleFileSelect, false);
 
         let videoUploadButton = document.getElementById('uploadVideoTrack');
         videoUploadButton.addEventListener('change', handleFileSelect, false);
+
+        let videoRandomButton = document.getElementById('loadVideoRandom');
+        videoRandomButton.addEventListener('click', handleVideoURL, false);
+
+        let videoURLButton = document.getElementById('submitLoadVideoURL');
+        videoURLButton.addEventListener('click', handleVideoURL, false);
 
         /**
          * General Audio-Controller
