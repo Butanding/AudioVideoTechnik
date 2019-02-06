@@ -60,7 +60,7 @@ function handleVideoURL(evt) {
     if (emptyVideoSlotCheck()) {
         let trackNumber = TrackManager.findFirstEmptyVideoTrack();
         //If manual URL, load Value from Input field
-        let url = document.getElementById("loadVideoURL");
+        let url = document.getElementById("loadVideoURL").value;
 
         //If random Button was pressed, select random Video
         if(evt.srcElement.getAttribute("id") == "random"){
