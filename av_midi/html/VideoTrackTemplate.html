@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     <title>Page Title</title>
 </head>
 <body>
@@ -61,8 +62,7 @@
         animation-timing-function: linear;
         animation-iteration-count: infinite;
         -webkit-animation-name: slide;
-        -webkit-animation-duration: 10sVolume
-;
+        -webkit-animation-duration: 10s;
         -webkit-animation-timing-function:linear;
         -webkit-animation-iteration-count: infinite;
     }
@@ -78,27 +78,28 @@
 
 
 <div>
-    <button id="removeTrack" aria-checked="false">
+    <button id="removeTrack" class="btn btn-danger" aria-checked="false">
         <span>Remove Video</span>
     </button>
-    <button id="addChromaKeying" aria-checked="false">
+    <button id="addChromaKeying" class="btn btn-secondary" aria-checked="false">
         <span>Add Chroma Keying</span>
     </button>
-    <button id="addInvertFilter" aria-checked="false">
+    <button id="addInvertFilter" class="btn btn-secondary" aria-checked="false">
         <span>Add Invert Filter</span>
     </button>
 
-    <p>
-        <label for="marqueeNewText">Marquee-Text</label>
-        <input type="text" id="marqueeNewText" name="name" required
+
+    <div class="form-group">
+        <label for="marqueeNewText">Marquee Text</label>
+        <input type="text" id="marqueeNewText" class="form-control" name="name" required
                minlength="4" maxlength="10000" size="10">
 
         <input type="checkbox" id="marqueeCheckbox"> Activate
 
-        <button id="marqueeUpdate" aria-checked="false">
+        <button id="marqueeUpdate" class="btn btn-secondary" aria-checked="false">
             <span>Update</span>
         </button>
-    </p>
+    </div>
 
 </div>
 
