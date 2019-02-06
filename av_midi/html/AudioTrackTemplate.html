@@ -1,68 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <title>Page Title</title>
+</head>
+<body>
+
+<style scoped>
+
+  @media screen and (-webkit-min-device-pixel-ratio:0) {
+      input[type='range'] {
+        overflow: hidden;
+        width: 150px;
+        -webkit-appearance: none;
+        background-color: grey;
+      }
+
+      input[type='range']::-webkit-slider-runnable-track {
+        height: 10px;
+        -webkit-appearance: none;
+        color: #13bba4;
+        margin-top: -1px;
+      }
+
+      input[type='range']::-webkit-slider-thumb {
+        width: 10px;
+        -webkit-appearance: none;
+        height: 10px;
+        cursor: ew-resize;
+        background: #434343;
+        box-shadow: -80px 0 0 80px #43e5f7;
+      }
+
+
+
+  }
+
+</style>
 <div class="audiotrack">
-    <div id="progress-bar">
+  <div id="progress-bar">
+  </div>
+  <div id="controls">
+    <!--Play Pause Button-->
+    <button id="audioPlayback" class="btn btn-success btn-sm mt-2 mb-2" data-playing="false" role="switch" aria-checked="false">
+      <span>Play/Pause</span>
+    </button>
+    <!--Remove Track Button-->
+    <button id="removeTrack" class="btn btn-danger btn-sm mt-2 mb-2" aria-checked="false">
+      <span>Remove Track</span>
+    </button>
+
+    <!-- Looping Checkbox -->
+    <input type="checkbox" id="loopAudioCheckbox"> Loop <br>
+
+    <!--Volume Level Slider-->
+    <div class="volume-wrapper">
+      <input class="slider" id="volume" type="range" min="0" max="127">Volume
     </div>
-    <div id="controls">
-        <!--Play Pause Button-->
-        <button id="audioPlayback" data-playing="false" role="switch" aria-checked="false">
-            <span>Play/Pause</span>
-        </button>
-
-        <!-- Looping Checkbox -->
-        <input type="checkbox" id="loopAudioCheckbox"> Loop
-
-        <!--Volume Level Slider-->
-        <input class="slider" id="volume" type="range" min="0" max="127">
-
-        <!--Progress-Bar Slider-->
-        <div id="progress">
-            <span id="currenttime" class="progressinfo"></span>
-            <input type="range" class="slider" id="progressID" min="0" max="127" step="0.01">
-            <span id="endtime" class="progressinfo"></span>
-        </div>
-
-        <!--Playback-Speed Slider-->
-        <span id="playbackrate" class="effectvalue"></span>
-        <input class="slider" id="playbackspeedslider" type="range"  min="0" max="127">
-
-        <!--Lowshelf Elements-->
-        <div id="lowshelf" class="effectwrapper">
-            <span class="effectlabel">lowshelf</span>
-            <span id="lowshelffreqlabel" class="effectvalue"></span>
-            <input type="range" id="lowshelfslider" class="slider" min="0" max="127">
-        </div>
-
-        <!-- Highshelf-Elements -->
-        <div id="highshelfdiv" class="effectdiv">
-            <span class="effecttitle">highshelf</span>
-            <span id="highshelffreqLabel" class="effectvalue"></span>
-            <input type="range" id="highshelfslider" class="slider" min="0" max="127">
-        </div>
-
-        <!-- Bandpass-Elements-->
-        <div id="bandpassdiv" class="effectdiv">
-            <span class="effecttitle">bandpass</span>
-            <span id="bandpassfreq" class="effectvalue"></span>
-            <input type="range" id="bandpassValSlider" class="slider" min="0" max="127">
-        </div>
-
-        <!--Bitcrusher Slider-->
-        <p>Bitcrusher</p>
-
-        <span id="bitcrusherBitsLabel" class="effectvalue">Bit-Size</span>
-        <input class="slider" id="bitcrusherBitsSlider" type="range"  min="1" max="16" value="4">
-
-
-        <span id="bitcrusherNormFreqLabel" class="effectvalue">Norm-Frequency</span>
-        <input class="slider" id="bitcrusherNormFreqSlider" type="range"  min="0.0" max="1.0" step ="0.1" value="0.1">
-
-        <button id="bitcrusher" role="switch" aria-checked="false">
-            <span>Bitcrusher</span>
-        </button>
-
-
-        <!--Remove Track Button-->
-        <button id="removeTrack" aria-checked="false">
-            <span>Remove Track</span>
-        </button>
+    <!--Progress-Bar Slider-->
+    <div id="progress">
+      <input type="range" class="slider" id="progressID" min="0" max="127" step="0.01">
+      <span id="currenttime" class="progressinfo"></span>
     </div>
+
+    <!--Playback-Speed Slider-->
+
+    <input class="slider" id="playbackspeedslider" type="range" min="0" max="127">
+    <span id="playbackrate" class="effectvalue"></span>
+
+    <!--Lowshelf Elements-->
+    <div id="lowshelf" class="effectwrapper">
+      <input type="range" id="lowshelfslider" class="slider" min="0" max="127">
+      <span class="effectlabel">lowshelf</span>
+      <span id="lowshelffreqlabel" class="effectvalue"></span>
+    </div>
+
+    <!-- Highshelf-Elements -->
+    <div id="highshelfdiv" class="effectdiv">
+      <input type="range" id="highshelfslider" class="slider" min="0" max="127">
+      <span class="effecttitle">highshelf</span>
+      <span id="highshelffreqLabel" class="effectvalue"></span>
+    </div>
+
+    <!-- Bandpass-Elements-->
+    <div id="bandpassdiv" class="effectdiv">
+
+      <input type="range" id="bandpassValSlider" class="slider" min="0" max="127">
+      <span class="effecttitle">bandpass</span>
+      <span id="bandpassfreq" class="effectvalue"></span>
+    </div>
+
+    <!--Bitcrusher Slider CURRENTLY DISABLED-->
+    <!--<button id="bitcrusher" role="switch" aria-checked="false">
+      <span>Enable Bitcrusher</span>
+    </button><br>
+
+
+    <input class="slider" id="bitcrusherBitsSlider" type="range" min="1" max="16" value="4">
+    <span id="bitcrusherBitsLabel" class="effectvalue">Bit-Size</span><br>
+
+
+
+    <input class="slider" id="bitcrusherNormFreqSlider" type="range" min="0.0" max="1.0" step="0.1" value="0.1">
+    <span id="bitcrusherNormFreqLabel" class="effectvalue">Norm-Frequency</span>
+-->
+
+  </div>
 </div>
+</body>
+</html>

@@ -61,11 +61,12 @@ function handleVideoURL(evt) {
         let trackNumber = TrackManager.findFirstEmptyVideoTrack();
         //If manual URL, load Value from Input field
         let url = document.getElementById("loadVideoURL").value;
+
         //If random Button was pressed, select random Video
         if(evt.srcElement.getAttribute("id") == "random"){
             console.log("Random Video wird geladen");
             //Select random video Track from URL list and load Video
-            url = randomVideoURL[Math.floor(Math.random() * randomVideoURL.length+1)];
+            url = randomVideoURL[Math.floor(Math.random() * randomVideoURL.length)];
         }
         TrackManager.addVideoTrack(trackNumber, url);
         addVideoComponentToUI(TrackManager.getVideoTrack(trackNumber));
