@@ -8,7 +8,7 @@ Hierbei handelt es sich um ein Projekt welches im Rahmen des Moduls Audio- und V
 #### Teammitglieder
 Konstantin Bruckert (558290)
 
-Martin Müller (XXXXX)
+Martin Müller (553459)
 
 #### Verwendete Technologien
 Generell wurde das Tool in Javascript mittels NodeJS geschrieben. Für das Abspielen, manipulieren und Mixen von Audio-Datein wurde die Web-Audio-API verwendet. Für das Streamen von Videos wird der DashJS Media-Player. Auf die Videos anzuwendende Effekte entstehen mit HTML-Canvas.
@@ -18,7 +18,7 @@ Generell wurde das Tool in Javascript mittels NodeJS geschrieben. Für das Abspi
 
 #### Voraussetzungen
 Für den Start der Anwendung sind folgende Programme zwingend erforlderlich:
-* Node.js
+* Node.js / npm
 * Chrome Browser
 
 Überdies muss ein Midi-Controller das System angeschlossen werden.
@@ -70,10 +70,21 @@ Die Anwendung bietet folgende Funktionen
 * Grafische Filter für Videos (Color-Inverter)
 
     
-    
 ## Bedienung
 
 #### Bedienung des MIDI-Controllers
+####Folgende Funktionen können mittels des Midi-Controllers gesteuert werden:
+* seperates Starten/Stoppen der 4 Audio-Spuren
+* gleichzeitiges Starten/Stoppen aller Audio-Spuren
+* seperates regeln der Lautstärke für alle 4 Audio-Spuren
+* gleichzeitiges muten/unmuten aller Audio-Spuren
+* gleichzeitiges Starten/Stoppen aller Video-Spuren
+* gleichzeitiges Muten/Unmuten aller Video-Spuren
+* Loopen/Unloopen der spielenden Audiofiles
+* Manipulation der Abspielgeschwindigkeiten
+* Manipulation von High-/Low-Pass Filter
+* Zurücksetzen aller geladenen Tracks
+* Bedienung des Crossfaders
 
 #### Bedienung der Web-App
 Audio-Datein können in beliebigen Audioformat entweder über den Upload-Button oder per Drag-and-Drop in der markierten Fläche eingeladen werden. Sie erscheinen der Reihe nach auf dem nächsten frei belegbaren der 4 Slots. Sind alle Slots voll, muss zuerst ein Track aus dem Panel entfernt werden. Über den Main-Audio-Controller können nun Channelübergreifende Einstellungen vorgenommen werden und über die einzelnen Audio-Panels können Chanelspeziefische Manipulationen vorgenommen werden.
