@@ -51,8 +51,8 @@ export default class AudioTrack extends HTMLElement {
         // those values are also needed to restore effects after `pause`
         this.volumeLevel = 1;
         this.playbackRate = 1;
-        this.bitcrusherBitSize = 16;
-        this.bitcrusherNormFreq = 1.0;
+        //this.bitcrusherBitSize = 16;
+        //this.bitcrusherNormFreq = 1.0;
         this.lowshelfNode;
         this.highshelfNode;
         this.bandpassNode;
@@ -62,7 +62,7 @@ export default class AudioTrack extends HTMLElement {
 
         // declare all the nodes necessary to implement effects
         this.gainNode;                      // for volume
-        this.bitcrusherNode;                //For Bitcrusher
+        //this.bitcrusherNode;                //For Bitcrusher
 
 
         // --------------------------------------------------
@@ -200,7 +200,7 @@ export default class AudioTrack extends HTMLElement {
          * BITCRUSHER SLIDERS
          * currently no sliders, only button
         */
-        this.bitcrusherBitSizeSlider = this.shadowRoot.getElementById('bitcrusherBitsSlider');
+        /*this.bitcrusherBitSizeSlider = this.shadowRoot.getElementById('bitcrusherBitsSlider');
         this.bitcrusherBitSizeLabel = this.shadowRoot.getElementById('bitcrusherBitsLabel');
         this.bitcrusherNormFreqSlider = this.shadowRoot.getElementById('bitcrusherNormFreqSlider');
         this.bitcrusherNormFreqLabel = this.shadowRoot.getElementById('bitcrusherNormFreqLabel');
@@ -212,7 +212,7 @@ export default class AudioTrack extends HTMLElement {
         this.bitcrusherNormFreqSlider.addEventListener('input', function () {
             self.bitcrusherNormFreqLabel.innerText = ("Norm-Frequency: " + self.bitcrusherNormFreqSlider.value);
             self.changeBitcrusher(self.bitcrusherBitSizeSlider.value, self.bitcrusherNormFreqSlider.value);
-        });
+        });*/
 
         //this.bitcrusherBitSizeSlider = this.shadowRoot.getElementById('bitcrusherBitsSlider');
 
@@ -491,7 +491,7 @@ export default class AudioTrack extends HTMLElement {
         this.source.playbackRate.value = this.playbackRate;
 
         //Bitcrusher
-        this.bitcrusherNode = this.audioCtx.createScriptProcessor(4096, 1, 1);
+        //this.bitcrusherNode = this.audioCtx.createScriptProcessor(4096, 1, 1);
         //this.changeBitcrusher(this.bitcrusherBitSize, this.bitcrusherNormFreq); //Initialize the Bitcrusher with default/no effect
 
 
@@ -528,7 +528,7 @@ export default class AudioTrack extends HTMLElement {
         this.bandpassNode.connect(this.highshelfNode);
         this.highshelfNode.connect(this.gainNode);
         //Bitcrusher currently disabled
-        this.bitcrusherNode.connect(this.audioCtx.destination);
+        //this.bitcrusherNode.connect(this.audioCtx.destination);
 
         //Connect Outputs
         this.gainNode.connect(this.formAnalyser);
@@ -537,6 +537,7 @@ export default class AudioTrack extends HTMLElement {
 
     /**
      * Bitcrusher
+     * CURRENTLY NOT WORKING
      *
      * This works by quantizing the input signal.
      * In other words, it samples the input signal every so often,
@@ -556,7 +557,7 @@ export default class AudioTrack extends HTMLElement {
         this.bitcrusherNode.bits = bits; // between 1 and 16
         this.bitcrusherNode.normfreq = normfreq; // between 0.0 and 1.0
 
-        this.bitcrusherNode.onaudioprocess = function(e) {
+        this.usherNode.onaudioprocess = function(e) {
             var step = Math.pow(1/2, e.srcElement.bits);
             var phaser = 0;
             var last = 0;
