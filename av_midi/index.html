@@ -54,47 +54,47 @@
           </div>
         </div>
       </div>
-      <div class="col-md-2">
+      <div class="col-md-2 mt-0">
         <div class="controller">
           <h3>Controller</h3>
           <div class="col-md-12">
-            <div class="row">
-              <button id="loadRandomAudio" data-playing="false" role="switch" aria-checked="false">
-                <span>Load Samples</span>
+            <div class="row mb-2">
+              <button id="loadRandomAudio" class="btn btn-light btn-block"  data-playing="false" role="switch" aria-checked="false">
+                <span class="text">Load Samples</span>
               </button>
             </div>
-            <div class="row">
-              <button id="playAllChannels" data-playing="false" role="switch" aria-checked="false">
+            <div class="row mb-2">
+              <button id="playAllChannels" class="btn btn-light btn-block"  data-playing="false" role="switch" aria-checked="false">
                 <span>Play all</span>
               </button>
             </div>
-            <div class="row">
-              <button id="pauseAllChannels" data-playing="false" role="switch" aria-checked="false">
+            <div class="row mb-2">
+              <button id="pauseAllChannels" class="btn btn-light btn-block"  data-playing="false" role="switch" aria-checked="false">
                 <span>Pause all</span>
               </button>
             </div>
-            <div class="row">
-              <button id="loopAllChannels" data-playing="false" role="switch" aria-checked="false">
+            <div class="row mb-2">
+              <button id="loopAllChannels" class="btn btn-light btn-block" data-playing="false" role="switch" aria-checked="false">
                 <span>Loop all</span>
               </button>
             </div>
-            <div class="row">
-              <button id="unloopAllChannels" data-playing="false" role="switch" aria-checked="false">
+            <div class="row mb-2">
+              <button id="unloopAllChannels" class="btn btn-light btn-block"  data-playing="false" role="switch" aria-checked="false">
                 <span>Unloop all</span>
               </button>
             </div>
-            <div class="row">
-              <button id="muteAllChannels" data-playing="false" role="switch" aria-checked="false">
+            <div class="row mb-2">
+              <button id="muteAllChannels" class="btn btn-light btn-block" data-playing="false" role="switch" aria-checked="false">
                 <span>Mute all</span>
               </button>
             </div>
-            <div class="row">
-              <button id="unmuteAllChannels" data-playing="false" role="switch" aria-checked="false">
+            <div class="row mb-2">
+              <button id="unmuteAllChannels" class="btn btn-light btn-block" data-playing="false" role="switch" aria-checked="false">
                 <span>Unmute all</span>
               </button>
             </div>
-            <div class="row">
-              <button id="resetAllChannels" data-playing="false" role="switch" aria-checked="false">
+            <div class="row mb-2">
+              <button id="resetAllChannels" class="btn btn-light btn-block" data-playing="false" role="switch" aria-checked="false">
                 <span>Reset all</span>
               </button>
             </div>
@@ -103,12 +103,11 @@
         <div class="row">
           <div class="col-md-12">
             <div class="management">
-              <form>
-                <div class="form-group">
-                  <label for="uploadAudioTrack">Upload Audio file or just Drag and Drop here</label>
-                  <input type="file" class="form-control-file" id="uploadAudioTrack" accept="audio/*">
-                </div>
-              </form>
+              <div class="form-group">
+                <p>Upload Audio file or just Drag and Drop here</p>
+                <label for="uploadAudioTrack" class="btn btn-secondary">Browse..</label>
+                <input type="file" id="uploadAudioTrack" style="display: none" accept="audio/*">
+              </div>
             </div>
           </div>
         </div>
@@ -133,34 +132,34 @@
       <div class="col-md-2">
         <div class="controller">
           <h3>Controller</h3>
-          <div class="col-md-12">
-            <div class="row">
-              <button id="loadRandomVideo" data-playing="false" role="switch" aria-checked="false">
+          <div class="col">
+            <div class="row mb-2">
+              <button id="loadRandomVideo" class="btn btn-light btn-block" data-playing="false" role="switch" aria-checked="false">
                 <span>Load Samples</span>
               </button>
             </div>
-            <div class="row">
-              <button id="playAllVideoChannels" data-playing="false" role="switch" aria-checked="false">
+            <div class="row mb-2">
+              <button id="playAllVideoChannels" class="btn btn-light btn-block" data-playing="false" role="switch" aria-checked="false">
                 <span>Play all</span>
               </button>
             </div>
-            <div class="row">
-              <button id="pauseAllVideoChannels" data-playing="false" role="switch" aria-checked="false">
+            <div class="row mb-2">
+              <button id="pauseAllVideoChannels" class="btn btn-light btn-block" data-playing="false" role="switch" aria-checked="false">
                 <span>Pause all</span>
               </button>
             </div>
-            <div class="row">
-              <button id="muteAllVideoChannels" data-playing="false" role="switch" aria-checked="false">
+            <div class="row mb-2">
+              <button id="muteAllVideoChannels" class="btn btn-light btn-block" data-playing="false" role="switch" aria-checked="false">
                 <span>Mute all</span>
               </button>
             </div>
-            <div class="row">
-              <button id="unmuteAllVideoChannels" data-playing="false" role="switch" aria-checked="false">
+            <div class="row mb-2">
+              <button id="unmuteAllVideoChannels" class="btn btn-light btn-block" data-playing="false" role="switch" aria-checked="false">
                 <span>Unmute all</span>
               </button>
             </div>
-            <div class="row">
-              <button id="resetAllVideoChannels" data-playing="false" role="switch" aria-checked="false">
+            <div class="row mb-2">
+              <button id="resetAllVideoChannels" class="btn btn-light btn-block" data-playing="false" role="switch" aria-checked="false">
                 <span>Reset all</span>
               </button>
             </div>
@@ -169,22 +168,27 @@
         <div class="management">
           <form>
             <div class="form-group">
-              <label for="uploadVideoTrack">Upload Video file from /res/video path</label>
-              <input type="file" class="form-control-file" id="uploadVideoTrack" accept=".mpd">
+              <p>Upload Video file from /res/video path</p>
+              <label for="uploadVideoTrack" class="btn btn-secondary">Browse</label>
+              <input type="file" class="form-control-file" style="display: none" id="uploadVideoTrack" accept=".mpd">
             </div>
           </form>
           <p>
-            <button id="loadVideoRandom" data-playing="false" role="switch" aria-checked="false">
+            <button id="loadVideoRandom" class="btn btn-secondary" data-playing="false" role="switch" aria-checked="false">
               <span id="random">Load Random Video</span>
             </button>
           </p>
-          <p>
-            <label for="loadVideoURL">URL</label>
-            <input type="text" id="loadVideoURL" name="name" required minlength="4" maxlength="10000" size="30">
-            <button id="submitLoadVideoURL" aria-checked="false">
-              <span id="url">Load</span>
-            </button>
-          </p>
+
+          <form>
+            <label for="loadVideoURL">Upload Video by Entering an URL</label>
+              <input type="text" id="loadVideoURL" class="form-control" name="name" placeholder="URL to .mpd File" required
+                     minlength="4" maxlength="10000" size="30">
+
+              <button id="submitLoadVideoURL"  class="btn btn-secondary" aria-checked="false">
+                <span id="url">Load</span>
+              </button>
+          </form>
+
         </div>
       </div>
     </div>
