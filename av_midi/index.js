@@ -1,4 +1,6 @@
 import TrackManager from './js/TrackManager.js';
+import InputManager from './js/InputManager.js';
+import Controller from './js/utils/Controller.js';
 
 let randomVideoURL = [
     "http://dash.edgesuite.net/akamai/bbb_30fps/bbb_30fps.mpd",
@@ -159,80 +161,6 @@ function addVideoComponentToUI(component) {
     currentEqualizer.appendChild(component);
 }
 
-function pauseAll(){
-    for (let i=0; i<4; i++){
-        if(TrackManager.getAudioTrack(i) != null){
-            if(TrackManager.getAudioTrack(i).isPlaying){
-                TrackManager.getAudioTrack(i).pausePlayback();
-            }
-        }
-    }
-}
-
-function playAll(){
-    for (let i=0; i<4; i++){
-        if(TrackManager.getAudioTrack(i) != null){
-            if(!TrackManager.getAudioTrack(i).isPlaying){
-                TrackManager.getAudioTrack(i).startPlayback();
-            }
-        }
-    }
-}
-
-function loopAll() {
-    for (let i=0; i<4; i++){
-        if(TrackManager.getAudioTrack(i) != null){
-            if(TrackManager.getAudioTrack(i).isPlaying){
-                TrackManager.getAudioTrack(i).isLooping = true;
-                TrackManager.getAudioTrack(i).source.loop = true;
-                TrackManager.getAudioTrack(i).shadowRoot.getElementById("loopAudioCheckbox").checked = true;
-
-            }
-        }
-    }
-}
-
-function unloopAll() {
-    for (let i=0; i<4; i++){
-        if(TrackManager.getAudioTrack(i) != null){
-            if(TrackManager.getAudioTrack(i).isPlaying){
-                TrackManager.getAudioTrack(i).isLooping = false;
-                TrackManager.getAudioTrack(i).source.loop = false;
-                TrackManager.getAudioTrack(i).shadowRoot.getElementById("loopAudioCheckbox").checked = false;
-
-            }
-        }
-    }
-}
-
-function muteAll(){
-    for (let i=0; i<4; i++){
-        if(TrackManager.getAudioTrack(i) != null){
-            TrackManager.getAudioTrack(i).changeVolume(0);
-        }
-    }
-}
-
-function unmuteAll(){
-    for (let i=0; i<4; i++){
-        if(TrackManager.getAudioTrack(i) != null){
-            TrackManager.getAudioTrack(i).changeVolume(60);
-        }
-    }
-}
-
-
-function resetAll(){
-    for (let i=0; i<4; i++){
-        if(TrackManager.getAudioTrack(i) != null){
-            TrackManager.getAudioTrack(i).stopPlayback();
-            TrackManager.getAudioTrack(i).shadowRoot.innerHTML = null;
-            TrackManager.deleteAudioTrack(i);
-        }
-    }
-}
-
-
 function loadRandomVideoSamples() {
     for(let i=0; i<2; i++){
         if (emptyVideoSlotCheck()) {
@@ -245,58 +173,11 @@ function loadRandomVideoSamples() {
     }
 }
 
-function pauseAllVideos() {
-    for(let i=0; i<2; i++){
-        if(TrackManager.getVideoTrack(i) != null){
-            TrackManager.getVideoTrack(i).player.pause();
-        }
-    }
-}
-
-function playAllVideos() {
-    for(let i=0; i<2; i++){
-        if(TrackManager.getVideoTrack(i) != null){
-            TrackManager.getVideoTrack(i).player.play();
-        }
-    }
-}
-
-function muteAllVideos() {
-    for(let i=0; i<2; i++){
-        if(TrackManager.getVideoTrack(i) != null){
-            TrackManager.getVideoTrack(i).player.setVolume(0);
-        }
-    }
-}
-
-function unmuteAllVideos() {
-    for(let i=0; i<2; i++){
-        if(TrackManager.getVideoTrack(i) != null){
-            TrackManager.getVideoTrack(i).player.setVolume(0.7);
-        }
-    }
-}
-
-function resetAllVideos() {
-    for(let i=0; i<2; i++){
-        if(TrackManager.getVideoTrack(i) != null){
-            //Stop possible Animation of Canvas-Filter
-            cancelAnimationFrame(TrackManager.getVideoTrack(i).animationID);
-            //Remove Canvas
-            TrackManager.getVideoTrack(i).videoCanvas = null;
-            //Remove Dashjs Player
-            TrackManager.getVideoTrack(i).player.reset();
-            //Empty Shadow-Root
-            TrackManager.getVideoTrack(i).shadowRoot.innerHTML = null;
-            //Delete Video from Global Trackmanager
-            TrackManager.deleteVideoTrack(i);
-        }
-    }
-}
-
 
 // Hier startet die App
 document.addEventListener('DOMContentLoaded', () => {
+
+        InputManager.addMidiController('cmdmm1');
 
         // dropzone
         let dropZone = document.getElementsByClassName('management');
@@ -326,25 +207,25 @@ document.addEventListener('DOMContentLoaded', () => {
         loadRandomAudio.addEventListener('click', loadRandomAudioSamples, false);
 
         let pauseAllChannels = document.getElementById('pauseAllChannels');
-        pauseAllChannels.addEventListener('click', pauseAll, false);
+        pauseAllChannels.addEventListener('click', Controller.pauseAll, false);
 
         let playAllChannels = document.getElementById('playAllChannels');
-        playAllChannels.addEventListener('click', playAll, false);
+        playAllChannels.addEventListener('click', Controller.playAll, false);
 
         let loopAllChannels = document.getElementById('loopAllChannels');
-        loopAllChannels.addEventListener('click', loopAll, false);
+        loopAllChannels.addEventListener('click', Controller.loopAll, false);
 
         let unloopAllChannels = document.getElementById('unloopAllChannels');
-        unloopAllChannels.addEventListener('click', unloopAll, false);
+        unloopAllChannels.addEventListener('click', Controller.unloopAll, false);
 
         let muteAllChannels = document.getElementById('muteAllChannels');
-        muteAllChannels.addEventListener('click', muteAll, false);
+        muteAllChannels.addEventListener('click', Controller.muteAll, false);
 
         let unmuteAllChannels = document.getElementById('unmuteAllChannels');
-        unmuteAllChannels.addEventListener('click', unmuteAll, false);
+        unmuteAllChannels.addEventListener('click', Controller.unmuteAll, false);
 
         let resetAllChannels = document.getElementById('resetAllChannels');
-        resetAllChannels.addEventListener('click', resetAll, false);
+        resetAllChannels.addEventListener('click', Controller.resetAll, false);
 
     /**
      * General Video-Controller
@@ -353,18 +234,18 @@ document.addEventListener('DOMContentLoaded', () => {
     loadRandomVideo.addEventListener('click', loadRandomVideoSamples, false);
 
     let pauseAllVideoChannels = document.getElementById('pauseAllVideoChannels');
-    pauseAllVideoChannels.addEventListener('click', pauseAllVideos, false);
+    pauseAllVideoChannels.addEventListener('click', Controller.pauseAllVideos, false);
 
     let playAllVideoChannels = document.getElementById('playAllVideoChannels');
-    playAllVideoChannels.addEventListener('click', playAllVideos, false);
+    playAllVideoChannels.addEventListener('click', Controller.playAllVideos, false);
 
     let muteAllVideoChannels = document.getElementById('muteAllVideoChannels');
-    muteAllVideoChannels.addEventListener('click', muteAllVideos, false);
+    muteAllVideoChannels.addEventListener('click', Controller.muteAllVideos, false);
 
     let unmuteAllVideoChannels = document.getElementById('unmuteAllVideoChannels');
-    unmuteAllVideoChannels.addEventListener('click', unmuteAllVideos, false);
+    unmuteAllVideoChannels.addEventListener('click', Controller.unmuteAllVideos, false);
 
     let resetAllVideoChannels = document.getElementById('resetAllVideoChannels');
-    resetAllVideoChannels.addEventListener('click', resetAllVideos, false);
+    resetAllVideoChannels.addEventListener('click', Controller.resetAllVideos, false);
     }
 );
