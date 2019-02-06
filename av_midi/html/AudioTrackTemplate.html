@@ -32,43 +32,7 @@
         box-shadow: -80px 0 0 80px #43e5f7;
       }
 
-      .volume-wrapper{
-        text-align: right;
-        margin-right: 50px;
-      }
 
-      .volume-wrapper input {
-        position:absolute;
-        top: 120px;
-        left: 420px;
-        width: 150px;
-        height: 20px;
-        transform-origin: 75px 75px;
-        transform: rotate(-90deg);
-        }
-
-        .volume-wrapper input[type='range'] {
-            overflow: hidden;
-            width: 200px;
-            -webkit-appearance: none;
-            background-color: grey;
-          }
-
-      .volume-wrapper input[type='range']::-webkit-slider-thumb {
-        width: 30px;
-        -webkit-appearance: none;
-        height: 30px;
-        cursor: ew-resize;
-        background: #434343;
-        box-shadow: -110px 0px 0 80px #43e5f7;
-      }
-
-      .volume-wrapper input[type='range']::-webkit-slider-runnable-track {
-        height: 20px;
-        -webkit-appearance: none;
-        color: #13bba4;
-        margin-top: -1px;
-      }
 
   }
 
@@ -78,11 +42,11 @@
   </div>
   <div id="controls">
     <!--Play Pause Button-->
-    <button id="audioPlayback" class="btn btn-success btn-sm mt-2" data-playing="false" role="switch" aria-checked="false">
+    <button id="audioPlayback" class="btn btn-success btn-sm mt-2 mb-2" data-playing="false" role="switch" aria-checked="false">
       <span>Play/Pause</span>
     </button>
     <!--Remove Track Button-->
-    <button id="removeTrack" class="btn btn-danger btn-sm mt-2" aria-checked="false">
+    <button id="removeTrack" class="btn btn-danger btn-sm mt-2 mb-2" aria-checked="false">
       <span>Remove Track</span>
     </button>
 
