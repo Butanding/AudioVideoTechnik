@@ -1,208 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>DV/VJ TOOL BROWSER TITLE</title>
+  <title>DV/VJ TOOL BROWSER TITLE</title>
 
-    <meta name="description" content="Source code generated using layoutit.com">
-    <meta name="author" content="LayoutIt!">
-
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Exo+2:300,400,600,900" rel="stylesheet">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
 
 </head>
+
 <body>
-
-<div class="container-fluid">
+  <div class="container-fluid">
     <div class="row">
-        <div class="col-md-12">
-            <div class="heading">
-                <h3>
-                    DJ/VJ TOOL
-                </h3>
+      <div class="col-md-12">
+        <div class="heading">
+          <h3>
+            DJ/VJ TOOL
+          </h3>
 
-            </div>
         </div>
+      </div>
     </div>
     <div class="row">
-        <div class="col-md-10">
+      <div class="col-md-10">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="visualizer">
+              <canvas id="visualCanvas" width="600" height="150"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="row border">
+          <div class="col-md-3">
+            <div class="equalizer">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="equalizer">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="equalizer">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="equalizer">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="controller">
+          <h3>Controller</h3>
+          <div class="col-md-12">
             <div class="row">
-                <div class="col-md-12">
-                    <div class="visualizer">
-                        <canvas id="visualCanvas" width="600" height="150"></canvas>
-                    </div>
-                </div>
+              <button id="loadRandomAudio" data-playing="false" role="switch" aria-checked="false">
+                <span>Load Samples</span>
+              </button>
             </div>
-            <div class="row border">
-                <div class="col-md-3">
-                    <div class="equalizer">
-                        EQ 1
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="equalizer">
-                        EQ 2
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="equalizer">
-                        EQ 3
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="equalizer">
-                        EQ 4
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <div class="controller">
-                <h3>Controller</h3>
-                <div class="col-md-12">
-                    <div class="row">
-                        <button id="loadRandomAudio" data-playing="false" role="switch" aria-checked="false">
-                            <span>Load Samples</span>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <button id="playAllChannels" data-playing="false" role="switch" aria-checked="false">
-                            <span>Play all</span>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <button id="pauseAllChannels" data-playing="false" role="switch" aria-checked="false">
-                            <span>Pause all</span>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <button id="loopAllChannels" data-playing="false" role="switch" aria-checked="false">
-                            <span>Loop all</span>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <button id="unloopAllChannels" data-playing="false" role="switch" aria-checked="false">
-                            <span>Unloop all</span>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <button id="muteAllChannels" data-playing="false" role="switch" aria-checked="false">
-                            <span>Mute all</span>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <button id="unmuteAllChannels" data-playing="false" role="switch" aria-checked="false">
-                            <span>Unmute all</span>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <button id="resetAllChannels" data-playing="false" role="switch" aria-checked="false">
-                            <span>Reset all</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="management">
-                <form>
-                    <div class="form-group">
-                        <label for="uploadAudioTrack">Upload Audio file or just Drag and Drop here</label>
-                        <input type="file" class="form-control-file" id="uploadAudioTrack" accept="audio/*">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-10">
             <div class="row">
-                <div class="col-md-6">
-                    <div class="video-equalizer">
-                       Video 1
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="video-equalizer">
-                        Video 2
-                    </div>
-                </div>
+              <button id="playAllChannels" data-playing="false" role="switch" aria-checked="false">
+                <span>Play all</span>
+              </button>
             </div>
-        </div>
-        <div class="col-md-2">
-            <div class="controller">
-                <h3>Controller</h3>
-                <div class="col-md-12">
-                    <div class="row">
-                        <button id="loadRandomVideo" data-playing="false" role="switch" aria-checked="false">
-                            <span>Load Samples</span>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <button id="playAllVideoChannels" data-playing="false" role="switch" aria-checked="false">
-                            <span>Play all</span>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <button id="pauseAllVideoChannels" data-playing="false" role="switch" aria-checked="false">
-                            <span>Pause all</span>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <button id="muteAllVideoChannels" data-playing="false" role="switch" aria-checked="false">
-                            <span>Mute all</span>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <button id="unmuteAllVideoChannels" data-playing="false" role="switch" aria-checked="false">
-                            <span>Unmute all</span>
-                        </button>
-                    </div>
-                    <div class="row">
-                        <button id="resetAllVideoChannels" data-playing="false" role="switch" aria-checked="false">
-                            <span>Reset all</span>
-                        </button>
-                    </div>
-                </div>
+            <div class="row">
+              <button id="pauseAllChannels" data-playing="false" role="switch" aria-checked="false">
+                <span>Pause all</span>
+              </button>
             </div>
+            <div class="row">
+              <button id="loopAllChannels" data-playing="false" role="switch" aria-checked="false">
+                <span>Loop all</span>
+              </button>
+            </div>
+            <div class="row">
+              <button id="unloopAllChannels" data-playing="false" role="switch" aria-checked="false">
+                <span>Unloop all</span>
+              </button>
+            </div>
+            <div class="row">
+              <button id="muteAllChannels" data-playing="false" role="switch" aria-checked="false">
+                <span>Mute all</span>
+              </button>
+            </div>
+            <div class="row">
+              <button id="unmuteAllChannels" data-playing="false" role="switch" aria-checked="false">
+                <span>Unmute all</span>
+              </button>
+            </div>
+            <div class="row">
+              <button id="resetAllChannels" data-playing="false" role="switch" aria-checked="false">
+                <span>Reset all</span>
+              </button>
+            </div>
+          </div>
         </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="management">
+              <form>
+                <div class="form-group">
+                  <label for="uploadAudioTrack">Upload Audio file or just Drag and Drop here</label>
+                  <input type="file" class="form-control-file" id="uploadAudioTrack" accept="audio/*">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-10">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="video-equalizer">
+              Video 1
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="video-equalizer">
+              Video 2
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="controller">
+          <h3>Controller</h3>
+          <div class="col-md-12">
+            <div class="row">
+              <button id="loadRandomVideo" data-playing="false" role="switch" aria-checked="false">
+                <span>Load Samples</span>
+              </button>
+            </div>
+            <div class="row">
+              <button id="playAllVideoChannels" data-playing="false" role="switch" aria-checked="false">
+                <span>Play all</span>
+              </button>
+            </div>
+            <div class="row">
+              <button id="pauseAllVideoChannels" data-playing="false" role="switch" aria-checked="false">
+                <span>Pause all</span>
+              </button>
+            </div>
+            <div class="row">
+              <button id="muteAllVideoChannels" data-playing="false" role="switch" aria-checked="false">
+                <span>Mute all</span>
+              </button>
+            </div>
+            <div class="row">
+              <button id="unmuteAllVideoChannels" data-playing="false" role="switch" aria-checked="false">
+                <span>Unmute all</span>
+              </button>
+            </div>
+            <div class="row">
+              <button id="resetAllVideoChannels" data-playing="false" role="switch" aria-checked="false">
+                <span>Reset all</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="management">
+          <form>
+            <div class="form-group">
+              <label for="uploadVideoTrack">Upload Video file from /res/video path</label>
+              <input type="file" class="form-control-file" id="uploadVideoTrack" accept=".mpd">
+            </div>
+          </form>
+          <p>
+            <button id="loadVideoRandom" data-playing="false" role="switch" aria-checked="false">
+              <span id="random">Load Random Video</span>
+            </button>
+          </p>
+          <p>
+            <label for="loadVideoURL">URL</label>
+            <input type="text" id="loadVideoURL" name="name" required minlength="4" maxlength="10000" size="30">
+            <button id="submitLoadVideoURL" aria-checked="false">
+              <span id="url">Load</span>
+            </button>
+          </p>
+        </div>
+      </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
-            <div class="management">
-                <form>
-                    <div class="form-group">
-                        <label for="uploadVideoTrack">Upload Video file from /res/video path</label>
-                        <input type="file" class="form-control-file" id="uploadVideoTrack" accept=".mpd">
-                    </div>
-                </form>
+      <div class="col-md-12">
 
-                <p>
-                    <button id="loadVideoRandom" data-playing="false" role="switch" aria-checked="false">
-                        <span id="random">Load Random Video</span>
-                    </button>
-                </p>
-                <p>
-                    <label for="loadVideoURL">URL</label>
-                    <input type="text" id="loadVideoURL" name="name" required
-                           minlength="4" maxlength="10000" size="30">
-                    <button id="submitLoadVideoURL" aria-checked="false">
-                        <span id="url">Load</span>
-                    </button>
-                </p>
-            </div>
-        </div>
+      </div>
     </div>
-</div>
+  </div>
 
-<script src="node_modules/jquery/dist/jquery.min.js"></script>
-<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="./node_modules/dashjs/dist/dash.all.min.js"></script>
-<script type="module" src="index.js"></script>
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="./node_modules/dashjs/dist/dash.all.min.js"></script>
+  <script type="module" src="index.js"></script>
 </body>
+
 </html>

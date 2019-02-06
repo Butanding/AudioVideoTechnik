@@ -1,4 +1,7 @@
+
+
 .equalizer {
+    height: 300px;
     margin-top:10px;
     border: #cdcdcd medium solid;
     border-radius: 10px;
@@ -6,8 +9,10 @@
     -webkit-border-radius: 10px;
     color: yellow;
     background-color: #1d1e1f;
+    padding-left: 10px;
 }
 .video-equalizer {
+  height: 680px;
     margin-top:10px;
     border: #cdcdcd medium solid;
     border-radius: 10px;
@@ -15,15 +20,15 @@
     -webkit-border-radius: 10px;
     color: yellow;
     background-color: #1d1e1f;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .visualizer {
-    margin-top:10px;
     border: #cdcdcd medium solid;
     border-radius: 10px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
-
     color: yellow;
     background-color: #1d1e1f;
 }
@@ -34,6 +39,7 @@
     margin-right: auto;
     display: block;
     width: 100%;
+
 }
 
 .controller{
@@ -42,33 +48,32 @@
     border-radius: 10px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
-
-
+    padding-left: 10px;
     color: yellow;
     background-color: #1d1e1f;
 }
 
 .management{
+
     margin-top:10px;
     border: #cdcdcd medium solid;
     border-radius: 10px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
-
-
+    padding-left: 10px;
     color: yellow;
     background-color: #1d1e1f;
 }
 
+
 body  {
-    background-image: url("../res/img/background.jpeg");
-    background-color: #cccccc;
+    background: #1d1e1f;
+    font-family: 'Exo 2', sans-serif;
 }
 
 .heading h3 {
     font-size: 4em;
-    font-weight: bold;
-    background-color: grey;
+    color: yellow;
     margin: 0;
     padding: 0;
 }
